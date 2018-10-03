@@ -51,6 +51,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('delete/{id}','CatalogController@destroy')->name('admin.catalog.delete');
     });
 
+    Route::group(['prefix' => 'links'], function () {
+        Route::get('list','LinksController@list')->name('admin.links.list');
+        Route::get('create','LinksController@create')->name('admin.links.create');
+        Route::post('store','LinksController@store')->name('admin.links.store');
+        Route::get('edit/{id}','LinksController@edit')->name('admin.links.edit');
+        Route::put('update','LinksController@update')->name('admin.links.update');
+        Route::delete('delete','LinksController@destroy')->name('admin.links.delete');
+    });
+
     Route::group(['prefix' => 'role'], function () {
         Route::get('list','RoleController@list')->name('admin.role.list')->middleware(['permission:manage_role']);
         Route::get('create','RoleController@create')->name('admin.role.create')->middleware(['permission:add_role']);
@@ -74,6 +83,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'datatable'], function () {
         Route::any('users', 'DataTableController@getUsers')->name('admin.datatable.users');
         Route::any('role', 'DataTableController@getRole')->name('admin.datatable.role');
+        Route::any('links', 'DataTableController@getLinks')->name('admin.datatable.links');
         Route::any('settings', 'DataTableController@getSettings')->name('admin.datatable.settings');
     });
 

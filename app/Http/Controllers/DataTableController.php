@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Http\Requests;
 use App\User;
-use App\Models\{Role,Settings};
+use App\Models\{Links, Role, Settings};
 use App\Http\Start\Helpers;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,12 +34,12 @@ class DataTableController extends Controller
                     $deleteBtn = '';
 
                 return $editBtn . $deleteBtn;
-
             })
 
             ->addColumn('role', function ($users) {
                 return isset($users->role->name) && $users->role->name ? $users->role->name : '';
             })
+
             ->rawColumns(['actions'])->make(true);
     }
 
@@ -75,5 +75,24 @@ class DataTableController extends Controller
             ->rawColumns(['actions'])->make(true);
     }
 
+    public function getLinks()
+    {
+        $links = Links::all();
+
+        return Datatables::of($links)
+
+            ->editColumn('catalog', function ($links) {
+                return $links->catalog->name;
+            })
+
+            ->addColumn('actions', function ($links) {
+                $editBtn = '<a title="Редактировать" class="btn btn-xs btn-primary"  href="' . url("admin/links/edit/$links->id") . '"><span  class="fa fa-edit"></span></a> &nbsp;';
+                $deleteBtn = '<a class="btn btn-xs btn-danger deleteRow" id="' . $links->id . '"><span class="fa fa-remove"></span></a>';
+
+                return $editBtn . $deleteBtn;
+            })
+
+            ->rawColumns(['actions'])->make(true);
+    }
 
 }

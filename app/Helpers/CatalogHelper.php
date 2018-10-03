@@ -12,7 +12,7 @@ function build_tree($cats, $parent_id, $only_parent = false)
         $tree = '<ul>';
         if ($only_parent == false) {
             foreach ($cats[$parent_id] as $cat) {
-                $tree .= '<li>' . $cat['name'] . ' <a title="Добавить подкатегорию" href="' . url('admin/catalog/create/' . $cat['id']) .'"> <span class="fa fa-plus"></span> </a> <a title="Редактировать" href="' . url('admin/catalog/edit/'. $cat['id']) . '"> <span class="fa fa-pencil"></span> </a> <a title="Удалить" href="' . url('/admin/catalog/delete/' . $cat['id']).'"> <span class="fa fa-trash-o danger"></span> </a>';
+                $tree .= '<li>' . $cat['name'] . ' <a title="Добавить подкатегорию" href="' . url('admin/catalog/create/' . $cat['id']) .'"> <span class="fa fa-plus"></span> </a> <a title="Редактировать" href="' . url('admin/catalog/edit/'. $cat['id']) . '"> <span class="fa fa-pencil"></span> </a> <a title="Удалить" href="' . url('/admin/catalog/delete/' . $cat['id']).'"> <span class="fa fa-trash-o"></span> </a>';
                 $tree .= build_tree($cats, $cat['id']);
                 $tree .= '</li>';
             }

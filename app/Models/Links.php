@@ -27,4 +27,11 @@ class Links extends Model
         'time_check',
         'number_check'
     ];
+
+    public function catalog()
+    {
+        return $this->belongsTo(Models\Catalog::class);
+    }
+
+
 }
