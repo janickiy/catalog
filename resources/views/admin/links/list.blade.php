@@ -28,7 +28,9 @@
                         <div class="box-header">
                             <div class="row">
                                 <div class="col-md-12 padding-bottom-10">
-                                    <a href="{{ URL::route('admin.links.create') }}"  class="btn btn-info btn-sm pull-left"><span class="fa fa-plus"> &nbsp;</span>Добавить ссылку</a>
+                                    <a href="{{ URL::route('admin.links.create') }}"
+                                       class="btn btn-info btn-sm pull-left"><span class="fa fa-plus"> &nbsp;</span>Добавить
+                                        ссылку</a>
                                 </div>
                             </div>
                         </div>
@@ -69,38 +71,36 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var table = $("#itemList").DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                }],
-                'createdRow': function( row, data, dataIndex ) {
+                'createdRow': function (row, data, dataIndex) {
                     $(row).attr('id', 'rowid_' + data['id']);
                 },
                 processing: true,
                 serverSide: true,
                 ajax: '{!! URL::route('admin.datatable.links') !!}',
                 columns: [
-                    {data: 'id', name: 'id'}
-                    {data: 'url', name: 'url'},
-                    {data: 'email', name: 'email'},
-                    {data: 'catalog', name: 'catalog'},
-                    {data: 'status', name: 'status'},
-                    {data: 'views', name: 'views'},
-                    {data: 'created_at', name: 'created_at'},
+
+
+
+                        {data: 'id', name: 'id'},
+                        {data: 'name', name: 'name'},
+                        {data: 'url', name: 'url'},
+                        {data: 'email', name: 'email'},
+
+                        {data: 'catalog', name: 'catalog'},
+                        {data: 'status', name: 'status'},
+                        {data: 'views', name: 'views'},
+
+                        {data: 'created_at', name: 'created_at'},
+
+
+
+
+
                     {data: "actions", name: 'actions', orderable: false, searchable: false}
                 ],
             });
         });
 
-        $(function () {
-            $("#example1").DataTable({
-                "columnDefs": [ {
-                    "targets": 3,
-                    "orderable": false
-                } ]
-            });
-
-        });
         // Delete start
         $(document).ready(function () {
 
@@ -117,15 +117,15 @@
                         confirmButtonText: "Да, удалить!",
                         closeOnConfirm: false
                     },
-                    function(isConfirm){
+                    function (isConfirm) {
                         if (!isConfirm) return;
                         $.ajax({
-                            url: SITE_URL + "/admin/role/delete/" + rowid,
+                            url: SITE_URL + "/admin/links/delete/" + rowid,
                             type: "DELETE",
                             dataType: "html",
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success: function () {
-                                $("#rowid_"+rowid).remove();
+                                $("#rowid_" + rowid).remove();
                                 swal("Сделано!", "Данные успешно удаленны!", "success");
                             },
                             error: function (xhr, ajaxOptions, thrownError) {
@@ -135,6 +135,5 @@
                     });
             });
         });
-        // Delete End
     </script>
 @endsection

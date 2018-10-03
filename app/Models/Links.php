@@ -30,8 +30,20 @@ class Links extends Model
 
     public function catalog()
     {
-        return $this->belongsTo(Models\Catalog::class);
+        return $this->belongsTo(Catalog::class);
     }
 
-
+    public function getStatusAttribute()
+    {
+        switch ($this->attributes['status']) {
+            case 0:
+                return 'new';
+            case 1:
+                return 'publish';
+            case 2:
+                return 'hide';
+            case 3:
+                return 'black';
+        }
+    }
 }

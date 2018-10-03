@@ -28,8 +28,8 @@ class CreateLinksTable extends Migration
             $table->string('token', 50);
             $table->boolean('check_link');
             $table->integer('views')->default(0);
-            $table->text('comment');
-            $table->dateTime('time_check');
+            $table->text('comment')->nullable();
+            $table->dateTime('time_check')->default('0000-00-00 00:00:00');
             $table->integer('number_check')->default(0);
             $table->timestamps();
         });

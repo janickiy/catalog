@@ -12,7 +12,7 @@ function build_tree($cats, $parent_id, $only_parent = false)
         $tree = '<ul>';
         if ($only_parent == false) {
             foreach ($cats[$parent_id] as $cat) {
-                $tree .= '<li>' . $cat['name'] . ' <a title="Добавить подкатегорию" href="' . url('admin/catalog/create/' . $cat['id']) .'"> <span class="fa fa-plus"></span> </a> <a title="Редактировать" href="' . url('admin/catalog/edit/'. $cat['id']) . '"> <span class="fa fa-pencil"></span> </a> <a title="Удалить" href="' . url('/admin/catalog/delete/' . $cat['id']).'"> <span class="fa fa-trash-o"></span> </a>';
+                $tree .= '<li>' . $cat['name'] . ' <a title="Добавить подкатегорию" href="' . url('admin/catalog/create/' . $cat['id']) . '"> <span class="fa fa-plus"></span> </a> <a title="Редактировать" href="' . url('admin/catalog/edit/' . $cat['id']) . '"> <span class="fa fa-pencil"></span> </a> <a title="Удалить" href="' . url('/admin/catalog/delete/' . $cat['id']) . '"> <span class="fa fa-trash-o"></span> </a>';
                 $tree .= build_tree($cats, $cat['id']);
                 $tree .= '</li>';
             }
@@ -38,6 +38,30 @@ function find_parent($tmp, $cur_id)
         return find_parent($tmp, $tmp[$cur_id][0]['parent_id']);
     }
     return (int)$tmp[$cur_id][0]['id'];
+}
+
+/**
+ * @param $option
+ * @param $parent_id
+ * @param int $lvl
+ * @return mixed
+ */
+function ShowTree(&$option, $parent_id, &$lvl = 0)
+{
+    $lvl++;
+
+    $catalogs = \App\models\Catalog::where('parent_id', $parent_id)->get();
+
+    foreach ($catalogs as $catalog) {
+        $indent = '';
+        for ($i = 1; $i < $lvl; $i++) $indent .= '-';
+
+        $option[$catalog->id] = $indent . " " . $catalog->name;
+        ShowTree($option, $catalog->id, $lvl);
+        $lvl--;
+    }
+
+    return $option;
 }
 
 

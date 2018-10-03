@@ -32,6 +32,7 @@
                             <th>Параметр</th>
                             <th>Тип</th>
                             <th>Значение</th>
+                            <th>Название</th>
                             <th width="8%">Действия</th>
                         </tr>
                         </thead>
@@ -109,6 +110,7 @@
                     {data: 'key_cd', name: 'key_cd'},
                     {data: 'type', name: 'type'},
                     {data: 'value', name: 'value'},
+                    {data: 'display_value', name: 'display_value'},
                     {data: "actions", name: 'actions', orderable: false, searchable: false}],
             });
 

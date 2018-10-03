@@ -64,10 +64,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var table = $("#itemList").DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false
-                }],
                 'createdRow': function( row, data, dataIndex ) {
                     $(row).attr('id', 'rowid_' + data['id']);
                 },
@@ -83,15 +79,6 @@
             });
         });
 
-        $(function () {
-            $("#example1").DataTable({
-                "columnDefs": [ {
-                    "targets": 3,
-                    "orderable": false
-                } ]
-            });
-
-        });
         // Delete start
         $(document).ready(function () {
 

@@ -6,7 +6,7 @@
  */
 function getSetting($key = '')
 {
-    $setting = \App\Settings::whereKeyCd(strtoupper($key))->first();
+    $setting = \App\Models\Settings::whereKeyCd(strtoupper($key))->first();
 
     if ($setting) {
         return $setting->value;

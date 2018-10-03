@@ -217,9 +217,15 @@ Use search to find needed section.
                 <a href="{{ URL::route('admin.dashboard') }}"><i class="fa fa-fw fa-home"></i> Dashboard</a>
             </li>
 
+            <li {!! Request::is('admin/links*') ? ' class="active"' : '' !!}>
+                <a href="{{ URL::route('admin.links.list') }}">
+                    <i class="fa fa-fw fa-file-o"></i> <span class="menu-item-parent">Ссылки</span>
+                </a>
+            </li>
+
             <li {!! Request::is('admin/settings*') ? ' class="active"' : '' !!}>
                 <a href="{{ URL::route('admin.catalog.list') }}">
-                    <i class="fa fa-fw fa-users"></i> <span class="menu-item-parent">Категории</span>
+                    <i class="fa fa-fw fa-folder"></i> <span class="menu-item-parent">Категории</span>
                 </a>
             </li>
 

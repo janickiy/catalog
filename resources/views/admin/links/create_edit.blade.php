@@ -34,6 +34,7 @@
 
                     <div class="col-sm-6">
 
+                        {!! Form::select('catalog_id', $options, isset($link) ? $link->catalog_id : null, ['placeholder' => 'Выберите', 'class' => 'form-control']) !!}
 
                         @if ($errors->has('catalog_id'))
                             <span class="text-danger">{{ $errors->first('catalog_id') }}</span>
@@ -91,7 +92,7 @@
 
                     <div class="col-sm-6">
 
-                        {!! Form::textarea('description', old('description', isset($link) ? $link->description : null), ['class' => 'form-control', 'rows' => 2]) !!}
+                        {!! Form::textarea('description', old('description', isset($link) ? $link->description : null), ['placeholder' =>'Описание','class' => 'form-control', 'rows' => 2]) !!}
 
                        @if ($errors->has('email'))
                            <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -105,7 +106,7 @@
 
                     <div class="col-sm-6">
 
-                        {!! Form::textarea('full_description', old('full_description', isset($link) ? $link->full_description : null), ['class' => 'form-control', 'rows' => 3]) !!}
+                        {!! Form::textarea('full_description', old('full_description', isset($link) ? $link->full_description : null), ['placeholder' =>'Полное описание','class' => 'form-control', 'rows' => 3]) !!}
 
                         @if ($errors->has('full_description'))
                             <span class="text-danger">{{ $errors->first('full_description') }}</span>
@@ -119,7 +120,7 @@
 
                     <div class="col-sm-6">
 
-                        {!! Form::textarea('keywords', old('keywords', isset($link) ? $link->keywords : null), ['class' => 'form-control', 'rows' => 2]) !!}
+                        {!! Form::textarea('keywords', old('keywords', isset($link) ? $link->keywords : null), ['placeholder' =>'Ключевые слова', 'class' => 'form-control', 'rows' => 2]) !!}
 
                         @if ($errors->has('keywords'))
                             <span class="text-danger">{{ $errors->first('keywords') }}</span>
@@ -133,7 +134,7 @@
 
                     <div class="col-sm-6">
 
-                        {!! Form::textarea('htmlcode_banner', old('htmlcode_banner', isset($link) ? $link->htmlcode_banner : null), ['class' => 'form-control', 'rows' => 3]) !!}
+                        {!! Form::textarea('htmlcode_banner', old('htmlcode_banner', isset($link) ? $link->htmlcode_banner : null), ['placeholder' =>'HTML код баннера','class' => 'form-control', 'rows' => 3]) !!}
 
                         @if ($errors->has('htmlcode_banner'))
                             <span class="text-danger">{{ $errors->first('htmlcode_banner') }}</span>
@@ -147,7 +148,7 @@
 
                     <div class="col-sm-6">
 
-                        {!! Form::checkbox('check_link', null, isset($link) ? ($link->check_link == 1 ? true: false): false) !!}
+                        {!! Form::checkbox('check_link', 1, isset($link) ? ($link->check_link == 1 ? true: false): false) !!}
 
                         @if ($errors->has('check_link'))
                             <span class="text-danger">{{ $errors->first('check_link') }}</span>
@@ -178,17 +179,6 @@
 
 @section('js')
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#addRole').validate({
-                rules: {
-                    name: {
-                        required: true
-                    },
-                    symbol: {
-                        required: true
-                    }
-                }
-            });
-        });
+
     </script>
 @endsection

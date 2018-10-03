@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 01 2018 г., 17:02
+-- Время создания: Окт 03 2018 г., 17:35
 -- Версия сервера: 10.1.34-MariaDB
 -- Версия PHP: 7.2.7
 
@@ -51,7 +51,9 @@ INSERT INTO `catalog` (`id`, `name`, `description`, `keywords`, `image`, `parent
 (5, 'Подкатегория 2 1', NULL, NULL, NULL, 3, '2018-10-01 11:06:44', '2018-10-01 11:06:44'),
 (15, 'gfhgf', NULL, NULL, '1538405411.jpeg', 0, '2018-10-01 11:50:11', '2018-10-01 11:50:11'),
 (16, 'sdfds', 'sdf', NULL, '1538405426.jpeg', 15, '2018-10-01 11:50:26', '2018-10-01 11:50:26'),
-(17, 'sdfs', NULL, NULL, '1538405471.jpeg', 15, '2018-10-01 11:51:11', '2018-10-01 11:51:11');
+(17, 'sdfs', NULL, NULL, '1538405471.jpeg', 15, '2018-10-01 11:51:11', '2018-10-01 11:51:11'),
+(18, 'ret', NULL, NULL, NULL, 3, '2018-10-03 10:46:59', '2018-10-03 10:46:59'),
+(19, 'ede', 'dewd', NULL, NULL, 5, '2018-10-03 10:55:28', '2018-10-03 10:55:28');
 
 -- --------------------------------------------------------
 
@@ -72,14 +74,21 @@ CREATE TABLE `links` (
   `catalog_id` int(11) NOT NULL,
   `status` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `check_link` tinyint(1) NOT NULL,
+  `check_link` tinyint(1) NOT NULL DEFAULT '0',
   `views` int(11) NOT NULL DEFAULT '0',
-  `comment` text COLLATE utf8_unicode_ci NOT NULL,
-  `time_check` datetime NOT NULL,
+  `comment` text COLLATE utf8_unicode_ci,
+  `time_check` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `number_check` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `links`
+--
+
+INSERT INTO `links` (`id`, `name`, `url`, `email`, `reciprocal_link`, `description`, `keywords`, `full_description`, `htmlcode_banner`, `catalog_id`, `status`, `token`, `check_link`, `views`, `comment`, `time_check`, `number_check`, `created_at`, `updated_at`) VALUES
+(1, 'Сайт', 'http://site1.ru', 'janickiy@mail.ru', 'http://bnmbnm.ru', 'бла бла бла', 'пвап вавапкавупав вап ва п ва пва', 'выава выавы выа выап вапвапва вап вапвап вап вап ав', NULL, 2, '1', '6115c12f9b0fc89999b8d0756c3a75b2', 0, 0, NULL, '2018-09-20 12:27:44', 0, '2018-10-03 11:32:07', '2018-10-03 12:18:24');
 
 -- --------------------------------------------------------
 
@@ -241,7 +250,10 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `key_cd`, `type`, `display_value`, `value`, `created_at`, `updated_at`) VALUES
-(2, 'QWER', 'FILE', '123', 'QWER.jpeg', '2018-10-01 03:33:04', '2018-10-01 03:33:04');
+(3, 'CHECK_INTERVAL', 'TEXT', 'Минимальный интервал между проверками ссылок (дней)', '7', '2018-10-03 12:29:51', '2018-10-03 12:29:51'),
+(4, 'NUMBER_CHECK', 'TEXT', 'Количество проверок ответной ссылки, по истечению которых ссылка будет удаленна', '3', '2018-10-03 12:30:58', '2018-10-03 12:30:58'),
+(5, 'REQUEST_CAPTCHA', 'TEXT', 'Запрашивать секюрити код (CAPTCHA)', '1', '2018-10-03 12:32:28', '2018-10-03 12:32:28'),
+(6, 'ADD_LINKS_WITHOUT_CHECK', 'TEXT', 'Добавлять ссылки в каталог минуя проверку администратора', '1', '2018-10-03 12:33:13', '2018-10-03 12:33:13');
 
 -- --------------------------------------------------------
 
@@ -336,13 +348,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `catalog`
 --
 ALTER TABLE `catalog`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT для таблицы `links`
 --
 ALTER TABLE `links`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `migrations`
@@ -366,7 +378,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
