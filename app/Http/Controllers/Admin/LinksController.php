@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Models\{Links};
+use App\Models\{Catalog, Links};
 use App\Http\Start\Helpers;
 use Validator;
 use App\Http\Controllers\Controller;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\LinksImport;
 
 class LinksController extends Controller
 {
@@ -25,7 +26,7 @@ class LinksController extends Controller
     public function create()
     {
         $options = [];
-        $options = ShowTree($options,0);
+        $options = ShowTree($options, 0);
 
         return view('admin.links.create_edit', compact('options'));
     }
@@ -51,7 +52,7 @@ class LinksController extends Controller
             return back()->withErrors($validator)->withInput();
         } else {
 
-            Links::create(array_merge($request->all(),['token' => md5($request->url . time()), 'status' => 1]));
+            Links::create(array_merge($request->all(), ['token' => md5($request->url . time()), 'status' => 1]));
 
             return redirect('admin/links/list')->with('success', 'Информация успешно добавлена');
         }
@@ -69,9 +70,9 @@ class LinksController extends Controller
 
         if ($link) {
             $options = [];
-            $options = ShowTree($options,0);
+            $options = ShowTree($options, 0);
 
-            return view('admin.links.create_edit', compact('link','options'));
+            return view('admin.links.create_edit', compact('link', 'options'));
         }
 
         abort(404);
@@ -127,70 +128,75 @@ class LinksController extends Controller
         Links::where(['id' => $id])->delete();
     }
 
-    public function import()
+    public function importForm()
     {
-        global $n;
+        return view('admin.links.import');
+    }
 
-        Excel::setDelimiter(';');
+    public function import(Request $request)
+    {
+        $rules = [
+            'file' => 'required',
+        ];
 
-        if (Input::hasFile('file')) {
-            $n = 0;
-            $path = Input::file('file')->getRealPath();
-            Excel::filter('chunk')->load($path)->chunk(250, function ($data) {
-                global $n;
+        $validator = Validator::make($request->all(), $rules);
 
-                foreach ($data as $row) {
-                    $name = trim($row->nazvanie_organizatsii);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        } else {
+            //Excel::setDelimiter(';');
 
-                    $city = trim($row->naselennye_punkty);
-                    $address = trim($row->adresa);
-                    $zip = trim($row->pochtovye_indeksy);
-                    $email = trim($row->{'e_mail'});
-                    $phone = trim($row->telefony);
-                    $fax = trim($row->faksy);
-                    $website = trim($row->sayty);
+            if ($request->hasFile('file')) {
 
-                    $arr = explode('/', trim($row->razdely));
-                    $parent_id = 0;
+              //  Excel::setDelimiter();
 
-                    for ($i = 0; $i < count($arr); $i++) {
-                        if ($arr[$i]) $parent_id = $this->importCategory(trim($arr[$i]), $parent_id);
-                    }
+                $path = $request->file('file')->getRealPath();
+              //  Excel::import(new LinksImport, $path, \Maatwebsite\Excel\Excel::XLSX)->load($path)->get();
 
-                    $category_id = $this->getIdByName(trim(array_pop($arr)));
 
-                    if ($category_id && !empty($name) && $this->checkExistOrg($name, $category_id) === false) {
-                        $fields = [
-                            'id'   => 0,
-                            'name' => $name,
-                            'user_id'     => 0,
-                            'category_id' => $category_id,
-                            'city'    => $city,
-                            'address' => $address,
-                            'zip'   => $zip,
-                            'email' => $email,
-                            'phone' => $phone,
-                            'fax'   => $fax,
-                            'website' => $website,
-                            'hidden'  => 0,
-                            'banned'  => 0,
-                            'deleted' => 0,
-                            'created_at' => date("Y-m-d H:i:s"),
-                            'updated_at' => date("Y-m-d H:i:s"),
-                            'count' => 0,
-                        ];
 
-                        if ($this->addOrganization($fields)) $n++;
-                    }
-                }
-            });
 
-            return ['result' => true, 'msg' => "Импортированно " . $n . " организаций"];
+
+
+
+                $array = Excel::toArray(new LinksImport, $request->file('file'),'local', \Maatwebsite\Excel\Excel::CSV);
+
+foreach($array as $w) {
+    dd($w);
+
+}
+              //  dd($array);
+
+
+
+
+            }
         }
     }
 
     public function export()
     {
 
+    }
+
+    /**
+     * @param $name
+     * @param int $parent_id
+     * @return mixed
+     *
+     */
+    private function importCategory($name, $parent_id = 0)
+    {
+        if (!empty($name) && is_numeric($parent_id)) {
+            $catalog = Catalog::where('name', 'like', $name)->where('parent_id', $parent_id);
+
+            if ($catalog->count() > 0) {
+                return $catalog->id;
+            } else {
+                if ($name) {
+                    Catalog::create(['name' => $name, 'parent_id' => $parent_id]);
+                }
+            }
+        }
     }
 }

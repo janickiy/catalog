@@ -183,8 +183,8 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
        // Bestmomo\\Installer\InstallerServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-        
+      //  Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*
@@ -240,7 +240,7 @@ return [
         'Curl'  => Ixudra\Curl\Facades\Curl::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+      //  'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Carbon'
     ],
 

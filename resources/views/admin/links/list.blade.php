@@ -6,13 +6,23 @@
 
 @endsection
 
-
 @section('content')
-
 
     @if (isset($title))<h2>{!! $title !!}</h2>@endif
 
     @include('layouts.admin_common.notifications')
+
+    <div class="row">
+        <div class="col-lg-12"><p class="text-center">
+            <a class="btn btn-outline btn-default btn-lg" title="Импорт" href="{{ URL::route('admin.links.import') }}">
+                <span class="fa fa-download fa-2x"></span> Импорт
+            </a>
+            <a class="btn btn-outline btn-default btn-lg" title="Экспорт" href="{{ URL::route('admin.links.export') }}">
+                <span class="fa fa-upload fa-2x"></span> Экспорт
+            </a>
+            </p>
+        </div>
+    </div>
 
     <div class="row-fluid">
 
@@ -78,24 +88,14 @@
                 serverSide: true,
                 ajax: '{!! URL::route('admin.datatable.links') !!}',
                 columns: [
-
-
-
-                        {data: 'id', name: 'id'},
-                        {data: 'name', name: 'name'},
-                        {data: 'url', name: 'url'},
-                        {data: 'email', name: 'email'},
-
-                        {data: 'catalog', name: 'catalog'},
-                        {data: 'status', name: 'status'},
-                        {data: 'views', name: 'views'},
-
-                        {data: 'created_at', name: 'created_at'},
-
-
-
-
-
+                    {data: 'id', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {data: 'url', name: 'url'},
+                    {data: 'email', name: 'email'},
+                    {data: 'catalog', name: 'catalog'},
+                    {data: 'status', name: 'status'},
+                    {data: 'views', name: 'views'},
+                    {data: 'created_at', name: 'created_at'},
                     {data: "actions", name: 'actions', orderable: false, searchable: false}
                 ],
             });

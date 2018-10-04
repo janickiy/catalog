@@ -58,8 +58,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('edit/{id}','Admin\LinksController@edit')->name('admin.links.edit');
         Route::put('update','Admin\LinksController@update')->name('admin.links.update');
         Route::delete('delete/{id}','Admin\LinksController@destroy')->name('admin.links.delete');
-        Route::delete('import','Admin\LinksController@import')->name('admin.links.import');
-        Route::delete('export','Admin\LinksController@export')->name('admin.links.export');
+        Route::get('import','Admin\LinksController@importForm')->name('admin.links.import');
+        Route::post('importLink','Admin\LinksController@import')->name('admin.links.importlink');
+        Route::get('export','Admin\LinksController@export')->name('admin.links.export');
 
     });
 
