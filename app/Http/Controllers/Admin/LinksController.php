@@ -144,22 +144,13 @@ class LinksController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         } else {
-            //Excel::setDelimiter(';');
 
             if ($request->hasFile('file')) {
 
-              //  Excel::setDelimiter();
 
                 $path = $request->file('file')->getRealPath();
-              //  Excel::import(new LinksImport, $path, \Maatwebsite\Excel\Excel::XLSX)->load($path)->get();
 
-
-
-
-
-
-
-                $array = Excel::toArray(new LinksImport, $request->file('file'),'local', \Maatwebsite\Excel\Excel::CSV);
+                $array = Excel::toArray(new LinksImport, $request->file('file'));
 
 foreach($array as $w) {
     dd($w);
