@@ -26,7 +26,13 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
 
         if ($url && isDomainAvailible($url, 5)) {
 
-            if (Links::where('url', 'like', $url)->count() == 0) {
+            $url_link =  $url;
+
+            if (substr( $url_link, 0, 7) == "http://") $url_link = str_replace('http://', '', $url_link);
+            if (substr( $url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
+            if (strpos( $url_link, '/') > 0) list($url_link) = explode('/', $url_link);
+
+            if (Links::where('url', 'like',  $url_link)->count() == 0) {
             $tags_row = @get_meta_tags($url);
 
             $tags = [];
@@ -53,13 +59,6 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
                 }
 
                 $category = array_pop($n_arr);
-
-                $url_link =  $url;
-
-                if (substr( $url_link, 0, 7) == "http://") $url_link = str_replace('http://', '', $url_link);
-                if (substr( $url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
-                if (strpos( $url_link, '/') > 0) list($url_link) = explode('/', $url_link);
-
 
                     return Links::create([
                             'name' => $name,
