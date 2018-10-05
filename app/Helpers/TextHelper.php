@@ -347,3 +347,11 @@ function shortText($str, $chars = 500)
 
     return substr($str, 0, $chars + $pos) . (isset($srttmpend) ?  $srttmpend : '');
 }
+
+
+function str_to_utf8($string) {
+    if (mb_detect_encoding($string, 'UTF-8', true) === false) {
+        $string = @iconv("windows-1251", "utf-8", $string);
+    }
+    return $string;
+}

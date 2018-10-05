@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Models\{Catalog, Links};
+use App\Models\{Catalog, Links, Settings};
 use App\Http\Start\Helpers;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -25,6 +26,8 @@ class LinksController extends Controller
 
     public function create()
     {
+
+
         $options = [];
         $options = ShowTree($options, 0);
 
@@ -133,8 +136,14 @@ class LinksController extends Controller
         return view('admin.links.import');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function import(Request $request)
     {
+        set_time_limit(0);
+
         $rules = [
             'file' => 'required',
         ];
@@ -145,23 +154,10 @@ class LinksController extends Controller
             return back()->withErrors($validator)->withInput();
         } else {
 
-            if ($request->hasFile('file')) {
+            $path = $request->file('file')->getRealPath();
+            Excel::import(new LinksImport, $request->file('file'));
 
-
-                $path = $request->file('file')->getRealPath();
-
-                $array = Excel::toArray(new LinksImport, $request->file('file'));
-
-foreach($array as $w) {
-    dd($w);
-
-}
-              //  dd($array);
-
-
-
-
-            }
+            return redirect('admin/links/import')->with('success', 'Импорт заврешен');
         }
     }
 
@@ -170,24 +166,5 @@ foreach($array as $w) {
 
     }
 
-    /**
-     * @param $name
-     * @param int $parent_id
-     * @return mixed
-     *
-     */
-    private function importCategory($name, $parent_id = 0)
-    {
-        if (!empty($name) && is_numeric($parent_id)) {
-            $catalog = Catalog::where('name', 'like', $name)->where('parent_id', $parent_id);
 
-            if ($catalog->count() > 0) {
-                return $catalog->id;
-            } else {
-                if ($name) {
-                    Catalog::create(['name' => $name, 'parent_id' => $parent_id]);
-                }
-            }
-        }
-    }
 }

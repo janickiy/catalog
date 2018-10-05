@@ -32,7 +32,8 @@
         "files": [
             "app/Helpers/SettingsHelper.php",
             "app/Helpers/CatalogHelper.php",
-            "app/Helpers/TextHelper.php"
+            "app/Helpers/TextHelper.php",
+            "app/Helpers/ParserHelper.php"
         ]
     },
     "autoload-dev": {

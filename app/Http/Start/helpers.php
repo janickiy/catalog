@@ -2,15 +2,12 @@
 
 namespace App\Http\Start;
 
-use View;
-use Session;
 use App\Models\Permission;
 use App\Models\RoleUser;
 use App\Models\PermissionRole;
 
 class Helpers
 {
-
     public static function has_permission($user_id, $permissions = '')
     {
         $permissions = explode('|', $permissions);
