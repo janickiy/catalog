@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a10215061eea13238c2f9067c2173544",
+    "content-hash": "1d22b86089e91b94064a0651d2ad6295",
     "packages": [
         {
             "name": "bestmomo/laravel5-3-installer",
@@ -39,6 +39,64 @@
             "description": "Helper for Laravel 5.3 application installation",
             "homepage": "http://github.com/bestmomo/laravel5-3-installer",
             "time": "2016-09-13T12:07:51+00:00"
+        },
+        {
+            "name": "bonecms/laravel-captcha",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igoshev/laravel-captcha.git",
+                "reference": "43fb6d9c8d44f0a66f2256976c9746bda75d3692"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igoshev/laravel-captcha/zipball/43fb6d9c8d44f0a66f2256976c9746bda75d3692",
+                "reference": "43fb6d9c8d44f0a66f2256976c9746bda75d3692",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "^5.6|^5.5|^5.4",
+                "illuminate/http": "^5.6|^5.5|^5.4",
+                "illuminate/routing": "^5.6|^5.5|^5.4",
+                "illuminate/session": "^5.6|^5.5|^5.4",
+                "illuminate/support": "^5.6|^5.5|^5.4",
+                "illuminate/translation": "^5.6|^5.5|^5.4",
+                "illuminate/view": "^5.6|^5.5|^5.4",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Igoshev\\Captcha\\Providers\\CaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Igoshev\\Captcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitriy Igoshev",
+                    "email": "dmitry.igo@gmail.com"
+                }
+            ],
+            "description": "Captcha integration for the Laravel 5",
+            "homepage": "https://github.com/igoshev/laravel-captcha",
+            "keywords": [
+                "Laravel Captcha",
+                "captcha"
+            ],
+            "time": "2018-07-11T12:33:31+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -3215,16 +3273,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v8.8.0",
+            "version": "v8.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "f2959bf773fc315e1b3319fb0a34c880b97706d5"
+                "reference": "851c4d4d307a66a4f8ab5c12444c1eb0104ecc80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/f2959bf773fc315e1b3319fb0a34c880b97706d5",
-                "reference": "f2959bf773fc315e1b3319fb0a34c880b97706d5",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/851c4d4d307a66a4f8ab5c12444c1eb0104ecc80",
+                "reference": "851c4d4d307a66a4f8ab5c12444c1eb0104ecc80",
                 "shasum": ""
             },
             "require": {
@@ -3282,7 +3340,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2018-09-05T05:43:38+00:00"
+            "time": "2018-10-05T06:10:33+00:00"
         }
     ],
     "packages-dev": [

@@ -18,7 +18,7 @@ class SettingsController extends Controller
 
     public function list()
     {
-        return view('admin.settings.list')->with('title','Настройки');
+        return view('admin.settings.list')->with('title','Настройки')->with('title','Настройки');
     }
 
     /**

@@ -14,40 +14,37 @@
 
     <!-- #CSS Links -->
     <!-- Basic Styles -->
-{!! Html::style('css/bootstrap.min.css') !!}
-{!! Html::style('css/font-awesome.min.css') !!}
+    {!! Html::style('css/bootstrap.min.css') !!}
+    {!! Html::style('css/font-awesome.min.css') !!}
 
 
-<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
 
-{!! Html::style('css/smartadmin-production-plugins.min.css') !!}
+    {!! Html::style('css/smartadmin-production-plugins.min.css') !!}
 
-{!! Html::style('css/smartadmin-production.min.css') !!}
+    {!! Html::style('css/smartadmin-production.min.css') !!}
 
+    {!! Html::style('css/smartadmin-skins.min.css') !!}
 
-{!! Html::style('css/smartadmin-skins.min.css') !!}
+    <!-- SmartAdmin RTL Support -->
+    {!! Html::style('css/smartadmin-rtl.min.css') !!}
 
-
-<!-- SmartAdmin RTL Support -->
-{!! Html::style('css/smartadmin-rtl.min.css') !!}
-
-
-{!! Html::style('/js/plugin/daterangepicker/daterangepicker.css') !!}
+    {!! Html::style('/js/plugin/daterangepicker/daterangepicker.css') !!}
 
 
-<!-- We recommend you use "your_style.css" to override SmartAdmin
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
          specific styles this will also ensure you retrain your customization with each SmartAdmin update.
     <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
 
 
-{!! Html::style('/js/plugin/sweetalert/sweetalert.css') !!}
+    {!! Html::style('/js/plugin/sweetalert/sweetalert.css') !!}
 
-{!! Html::style('/js/plugin/jquery-treeview-master/jquery.treeview.css') !!}
+    {!! Html::style('/js/plugin/jquery-treeview-master/jquery.treeview.css') !!}
 
 
-@yield('css')
+    @yield('css')
 
-<!-- #FAVICONS -->
+    <!-- #FAVICONS -->
     <link rel="shortcut icon" href="{{ url('img/favicon/favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url('img/favicon/favicon.ico') }}" type="image/x-icon">
 

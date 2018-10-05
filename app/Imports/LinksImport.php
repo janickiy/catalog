@@ -45,7 +45,6 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
 
             $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
             $description = isset($tags['description']) ? $tags['description'] : '';
-            $title = isset($tags['title']) ? $tags['title'] : '';;
 
             if ($description) {
                 $arr = explode('/', trim($row['tematika']));
@@ -64,7 +63,7 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
                             'name' => $name,
                             'url' => $url_link,
                             'email' => $email,
-                            'description' => $title,
+                            'description' => $description,
                             'keywords' => $keywords,
                             'full_description' => $description,
                             'catalog_id' => isset($category['id']) ? $category['id'] : 3,

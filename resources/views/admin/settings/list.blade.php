@@ -8,6 +8,8 @@
 
 @section('content')
 
+    @if (isset($title))<h2>{!! $title !!}</h2>@endif
+
     <div class="row-fluid">
 
         <div class="col">

@@ -26,8 +26,6 @@ class LinksController extends Controller
 
     public function create()
     {
-
-
         $options = [];
         $options = ShowTree($options, 0);
 
@@ -89,7 +87,7 @@ class LinksController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'url' => 'required|url|unique:links,url,' . $request->id,
+            'url' => 'required|unique:links,url,' . $request->id,
             'email' => 'required|email',
             'description' => 'required',
             'full_description' => 'required',

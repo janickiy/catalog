@@ -75,15 +75,22 @@
 
 {!! Html::script('js/smart-chat-ui/smart.chat.manager.min.js') !!}
 
-
 {!! Html::script('js/plugin/datatables/jquery.dataTables.min.js') !!}
+
 {!! Html::script('js/plugin/datatables/dataTables.colVis.min.js') !!}
+
 {!! Html::script('js/plugin/datatables/dataTables.tableTools.min.js') !!}
+
 {!! Html::script('js/plugin/datatables/dataTables.bootstrap.min.js') !!}
+
 {!! Html::script('js/plugin/datatable-responsive/datatables.responsive.min.js') !!}
+
 {!! Html::script('js/plugin/daterangepicker/moment.min.js') !!}
+
 {!! Html::script('js/plugin/daterangepicker/daterangepicker.js') !!}
+
 {!! Html::script('js/plugin/sweetalert/sweetalert-dev.js') !!}
+
 {!! Html::script('js/plugin/jquery-treeview-master/jquery.treeview.js') !!}
 
 

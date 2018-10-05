@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/{id?}', 'HomeController@index')->name('index');
+Route::get('/info/{id}', 'HomeController@info')->name('info');
+Route::get('/catalog/addurl', 'HomeController@addurl')->name('addurl');
+Route::post('/add', 'HomeController@add')->name('add');
+Route::get('/redirect/{id}', 'HomeController@redirect')->name('redirect');
+
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');

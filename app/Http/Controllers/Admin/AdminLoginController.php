@@ -39,7 +39,7 @@ class AdminLoginController extends Controller
 
 
         if ($validator->fails()) {
-            return redirect('/admin')
+            return redirect('admin/dashboard')
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -49,7 +49,7 @@ class AdminLoginController extends Controller
                 return redirect()->intended('dashboard');
             } else {
                 Session::flash('error', 'You are not authenticated user !');
-                return redirect("/admin");
+                return redirect("admin/dashboard");
             }
         }
 
@@ -65,7 +65,7 @@ class AdminLoginController extends Controller
         Auth::logout();
         \Session::flush();
 
-        return redirect('/admin');
+        return redirect('admin/dashboard');
     }
 
     /**

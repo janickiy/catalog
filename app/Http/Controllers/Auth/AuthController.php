@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     // Some methods which were generated with the app
     
-    protected $redirectTo = '/home';
+    protected $redirectTo = 'admin/dashboard';
 
     /**
      * Redirect the user to the OAuth Provider.

@@ -64,4 +64,29 @@ function ShowTree(&$option, $parent_id, &$lvl = 0)
     return $option;
 }
 
+/**
+ * @param $id
+ * @return array
+ */
+function ShowSubCat($id)
+{
+    $catalogs = \App\models\Catalog::selectRaw('catalog.id, catalog.name, COUNT(links.status) AS number_links')
+        ->leftJoin('links','links.catalog_id','=','catalog.id')
+        ->groupBy('catalog.id')
+        ->groupBy('catalog.name')
+        ->orderBy('catalog.name')
+        ->where('catalog.parent_id', $id)
+        ->get();
+
+    $sub_category_list = [];
+
+    if ($catalogs) {
+        foreach ($catalogs as $catalog) {
+            $sub_category_list[] = '<a href="' . url('/' . $catalog->id) . '">' . $catalog->name . '</a> <span>(' . $catalog->number_links . ')</span>';
+        }
+    }
+
+    return implode(', ',$sub_category_list);
+}
+
 
