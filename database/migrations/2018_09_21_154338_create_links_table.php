@@ -16,9 +16,11 @@ class CreateLinksTable extends Migration
         Schema::create('links', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('url')->nullable();
+            $table->string('url');
             $table->string('email')->nullable();
             $table->string('reciprocal_link')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('city')->nullable();
             $table->text('description');
             $table->text('keywords')->nullable();
             $table->text('full_description');

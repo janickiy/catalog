@@ -13,6 +13,8 @@ class Links extends Model
         'name',
         'url',
         'email',
+        'city',
+        'phone',
         'reciprocal_link',
         'description',
         'keywords',

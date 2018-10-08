@@ -76,7 +76,7 @@ class DataTableController extends Controller
 
     public function getLinks()
     {
-        $links = Links::all();
+        $links = Links::select('*');
 
         return Datatables::of($links)
 

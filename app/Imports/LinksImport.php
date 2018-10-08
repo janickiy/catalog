@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Carbon\Carbon;
 
-class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
+class LinksImport implements ToModel, WithBatchInserts
 {
 
     /**
@@ -19,10 +19,20 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
      */
     public function model(array $row)
     {
+        /*
         $name = trim($row['nazvanie_kompanii']);
         $url = trim($row['www']);
         $email = trim($row['e_mail']);
         $telefon = trim($row['telefon']);
+        */
+
+
+        $city = trim($row[0]);
+        $name = trim($row[1]);
+        $category = trim($row[3]);
+        $url = trim($row[5]);
+        $email = trim($row[6]);
+        $phone = trim($row[7]);
 
         if ($url && isDomainAvailible($url, 5)) {
 
@@ -32,7 +42,7 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
             if (substr( $url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
             if (strpos( $url_link, '/') > 0) list($url_link) = explode('/', $url_link);
 
-            if (Links::where('url', 'like',  $url_link)->count() == 0) {
+            if (Links::where('url', '=',  $url_link)->count() == 0) {
             $tags_row = @get_meta_tags($url);
 
             $tags = [];
@@ -47,7 +57,7 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
             $description = isset($tags['description']) ? $tags['description'] : '';
 
             if ($description) {
-                $arr = explode('/', trim($row['tematika']));
+                $arr = explode('/', $category);
                 $n_arr = [];
 
                 $parent_id = 0;
@@ -63,6 +73,8 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
                             'name' => $name,
                             'url' => $url_link,
                             'email' => $email,
+                            'phone' => $phone,
+                            'city' => $city,
                             'description' => $description,
                             'keywords' => $keywords,
                             'full_description' => $description,
@@ -81,10 +93,12 @@ class LinksImport implements ToModel, WithHeadingRow, WithBatchInserts
         return 1000;
     }
 
+    /*
     public function headingRow(): int
     {
         return 6;
     }
+    */
 
     public function batchSize(): int
     {

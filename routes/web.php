@@ -11,12 +11,14 @@
 |
 */
 
+Route::get('/login', 'Admin\AdminLoginController@login');
 
-Route::get('/{id?}', 'HomeController@index')->name('index');
-Route::get('/info/{id}', 'HomeController@info')->name('info');
-Route::get('/catalog/addurl', 'HomeController@addurl')->name('addurl');
-Route::post('/add', 'HomeController@add')->name('add');
-Route::get('/redirect/{id}', 'HomeController@redirect')->name('redirect');
+Route::get('/{id?}', 'FrontendController@index')->name('index')->where('id', '[0-9]+');
+Route::get('/info/{id}', 'FrontendController@info')->name('info')->where('id', '[0-9]+');
+Route::get('/addurl', 'FrontendController@addurl')->name('addurl');
+Route::post('/add', 'FrontendController@add')->name('add');
+Route::get('/redirect/{id}', 'FrontendController@redirect')->name('redirect')->where('id', '[0-9]+');
+Route::get('/rules', 'FrontendController@rules')->name('rules');
 
 
 Auth::routes();
@@ -27,7 +29,7 @@ Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallba
 //////////ADMIN PANEL////////////////
 
 Route::get('/admin', 'Admin\AdminLoginController@login');
-Route::get('/admin/login', 'Admin\AdminLoginController@login');
+
 Route::post('/admin/authenticate', 'Admin\AdminLoginController@authenticate');
 Route::get('/logout', 'Admin\AdminLoginController@logout');
 
