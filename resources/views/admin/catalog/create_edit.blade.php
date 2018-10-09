@@ -85,6 +85,23 @@
 
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+
+                            {!! Form::label('parent_id', 'Раздел', ['class' => 'col-sm-3 control-label']) !!}
+
+                            <div class="col-sm-6">
+
+                                {!! Form::select('parent_id', $options, isset($catalog) ? $catalog->parent_id : 0, ['class' => 'form-control']) !!}
+
+                                @if ($errors->has('parent_id'))
+                                    <span class="text-danger">{{ $errors->first('parent_id') }}</span>
+                                @endif
+
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="box-footer">

@@ -49,6 +49,7 @@
                         <tr>
                             <th data-hide="phone"> ID</th>
                             <th data-hide="phone"> Название</th>
+                            <th data-hide="phone"> Описание</th>
                             <th data-hide="phone"> Ссылка</th>
                             <th data-hide="phone"> Email</th>
                             <th data-hide="phone"> Каталог</th>
@@ -88,6 +89,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
+                    {data: 'description', name: 'description'},
                     {data: 'url', name: 'url'},
                     {data: 'email', name: 'email'},
                     {data: 'catalog', name: 'catalog'},

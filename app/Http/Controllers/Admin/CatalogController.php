@@ -44,7 +44,10 @@ class CatalogController extends Controller
     {
         if (!is_numeric($parent_id)) abort(500);
 
-        return view('admin.catalog.create_edit', compact('parent_id'));
+        $options[0] = 'Выберите';
+        $options = ShowTree($options, 0);
+
+        return view('admin.catalog.create_edit', compact('parent_id', 'options'));
     }
 
     /**
@@ -95,8 +98,10 @@ class CatalogController extends Controller
         $catalog = Catalog::where('id', $id)->first();
 
         if ($catalog) {
+            $options[0] = 'Выберите';
+            $options = ShowTree($options, 0);
             $parent_id = $catalog->parent_id;
-            return view('admin.catalog.create_edit', compact('catalog', 'parent_id'));
+            return view('admin.catalog.create_edit', compact('catalog', 'parent_id', 'options'));
         }
 
         abort(404);

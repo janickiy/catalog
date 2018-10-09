@@ -93,25 +93,14 @@
             };
 
             $('#userList').dataTable({
-                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
-                    "t" +
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-                "autoWidth": true,
-                "oLanguage": {
-                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-                },
+
                 "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
                         responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#userList'), breakpointDefinition);
                     }
                 },
-                "rowCallback": function (nRow) {
-                    responsiveHelper_dt_basic.createExpandIcon(nRow);
-                },
-                "drawCallback": function (oSettings) {
-                    responsiveHelper_dt_basic.respond();
-                },
+
                 'createdRow': function (row, data, dataIndex) {
                     $(row).attr('id', 'rowid_' + data['id']);
                 },
@@ -131,16 +120,7 @@
 
             /* END BASIC */
 
-            // Apply the filter
-            $("#datatable_fixed_column thead th input[type=text]").on('keyup change', function () {
 
-                otable
-                    .column($(this).parent().index() + ':visible')
-                    .search(this.value)
-                    .draw();
-
-            });
-            /* END COLUMN FILTER */
 
             $('#userList').on('click', 'a.deleteRow', function () {
                 var btn = this;
