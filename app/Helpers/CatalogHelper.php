@@ -65,6 +65,30 @@ function ShowTree(&$option, $parent_id, &$lvl = 0)
 }
 
 /**
+ * @param $topbar
+ * @param $parent_id
+ * @return array
+ */
+function  topbarMenu(&$topbar, $parent_id)
+{
+    if (is_numeric($parent_id)) {
+        $result = \App\models\Catalog::where('id', $parent_id);
+
+        if ($result->count() > 0) {
+           $catalog = $result->first();
+
+            $topbar[] = [$catalog->id, $catalog->name];
+
+            topbarMenu($topbar, $catalog->parent_id);
+        }
+    }
+
+    sort($topbar);
+
+    return $topbar;
+}
+
+/**
  * @param $id
  * @return array
  */

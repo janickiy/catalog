@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Start\Helpers;
 use App\Models\{Catalog,Links};
 use Validator;
+use URL;
 
 class FrontendController extends Controller
 {
@@ -43,7 +44,7 @@ class FrontendController extends Controller
         // Form an array
         for ($i = 0; $i < $number; $i++) {
             for ($j = 0; $j < getSetting('COLUMNS_NUMBER'); $j++) {
-                if(isset($arraycat[$j * $number + $i])) $arr[$i][$j] = $arraycat[$j * $number + $i];
+                if (isset($arraycat[$j * $number + $i])) $arr[$i][$j] = $arraycat[$j * $number + $i];
             }
         }
 
@@ -53,7 +54,21 @@ class FrontendController extends Controller
             $links = Links::orderBy('id', 'DESC')->take(5)->get();
         }
 
-        return view('frontend.index', compact('arr','number', 'links', 'id'))->with('title','Каталог сайтов');
+        if ($id > 0) {
+            $topbar = [];
+            $arraypathway = topbarMenu($topbar, $id);
+            $pathway = '<a href="' . URL::route('index') . '">Главная</a> ';
+
+            for ($i = 0; $i < count($arraypathway); $i++) {
+                if ($arraypathway[$i][0] == $id) {
+                    $pathway .= '» ' . $arraypathway[$i][1];
+                } else {
+                    $pathway .= '» <a href="' . URL::route('index', ['id' => $arraypathway[$i][0]]) . '">' . $arraypathway[$i][1] . '</a>';
+                }
+            }
+        }
+
+        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway'))->with('title','Каталог сайтов');
     }
 
     /**

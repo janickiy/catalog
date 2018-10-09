@@ -10,7 +10,6 @@
 
 @section('content')
 
-
     <table width="100%" border="0">
         @for ($i = 0; $i < $number; $i++)
             <tr>
@@ -21,10 +20,11 @@
                                 <tr>
                                     <td valign="top"><img border="0" src="{{ isset($arr[$i][$j][1]) && $arr[$i][$j][1] ? url('/img/folder.gif') : url('/img/folder.gif') }}"></td>
                                     <td>
-                                        <a href="{{ url('/' . $arr[$i][$j][1]) }}">{{ $arr[$i][$j][0] }}</a> <span>({{ $arr[$i][$j][3] }})</span><br>
+                                        <a href="{{ URL::route('index', ['id' => $arr[$i][$j][1]]) }}">{{ $arr[$i][$j][0] }}</a> <span>({{ $arr[$i][$j][3] }})</span><br>
                                         <div class="subcat">
 
                                             {!! ShowSubCat($arr[$i][$j][1]) !!}
+
                                         </div>
 
                                     </td>
@@ -37,7 +37,7 @@
         @endfor
     </table>
 
-
+    {!! isset($pathway) ? $pathway : '' !!}
 
     <table border="0" width="100%">
         <tr>
@@ -46,7 +46,6 @@
                 <div style="text-align: center;"> <a href="{{ URL::route('addurl') }}">Добавить сайт</a> </div>
 
                 @foreach($links as $link)
-
 
                     <div id="link">
                         <table width="100%" border="0">
@@ -57,8 +56,8 @@
                                             <td>{!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $links->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">"'; !!}</td>
                                         </tr>
                                     </table>
-                                    <p align="justify"><a href="{{ $link->url }}" target=_blank>{{ $link->name }}</a> - {{ $link->description }}</a><br /><br />
-                                        <a href="{{ url('/info/' . $link->id) }}">подробно...</a>
+                                    <p align="justify"><a href="http://{{ $link->url }}" target=_blank>{{ $link->name }}</a> - {{ $link->description }}</a><br /><br />
+                                        <a href="{{ URL::route('info',['id' => $link->id]) }}">подробно...</a>
                                     </p>
                                 </td>
                             </tr>
@@ -70,21 +69,16 @@
                             </tr>
                         </table>
 
-
-
                     </div>
 
                 @endforeach
 
-
                 {!! isset($id) && $id ? $links->links() : '' !!}
-
 
                 <div style="text-align: center;"> <a href="{{ URL::route('addurl') }}">Добавить сайт</a> </div>
             </td>
         </tr>
     </table>
-
 
 @endsection
 

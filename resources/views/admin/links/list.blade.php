@@ -38,9 +38,7 @@
                         <div class="box-header">
                             <div class="row">
                                 <div class="col-md-12 padding-bottom-10">
-                                    <a href="{{ URL::route('admin.links.create') }}"
-                                       class="btn btn-info btn-sm pull-left"><span class="fa fa-plus"> &nbsp;</span>Добавить
-                                        ссылку</a>
+                                    <a href="{{ URL::route('admin.links.create') }}" class="btn btn-info btn-sm pull-left"><span class="fa fa-plus"> &nbsp;</span>Добавить ссылку</a>
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@
     <p>{!! $link->description !!}</p>
 
     <br />
-    Перейти на сайт: <a href="{{ url('redirect/' . $link->id) }}">{{ $link->url }}</a>
+    Перейти на сайт: <a href="http://{{ url('redirect/' . $link->id) }}">{{ $link->url }}</a>
 
     <table border="0" width=100%>
         <tr>

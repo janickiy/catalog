@@ -152,7 +152,7 @@ class LinksController extends Controller
             return back()->withErrors($validator)->withInput();
         } else {
 
-            $path = $request->file('file')->getRealPath();
+            //$path = $request->file('file')->getRealPath();
             Excel::import(new LinksImport, $request->file('file'));
 
             return redirect('admin/links/import')->with('success', 'Импорт заврешен');
