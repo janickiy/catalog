@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\{Catalog, Links};
 use App\Http\Start\Helpers;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Validator;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\LinksImport;
+
+use App\Imports\LinksImportFromCsv;
 
 class LinksController extends Controller
 {
@@ -21,7 +24,13 @@ class LinksController extends Controller
 
     public function list()
     {
-        return view('admin.links.list')->with('title', 'Ссылки');
+        $status_list = [];
+
+        foreach(['new' => 0,'publish' => 1,'hide' => 2,'block' => 3] as $key => $value) {
+            $status_list[$value] = linkStatus($key);
+        }
+
+        return view('admin.links.list', compact('status_list'))->with('title', 'Ссылки');
     }
 
     public function create()
@@ -47,7 +56,14 @@ class LinksController extends Controller
             'catalog_id' => 'required|numeric'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'required' => 'Это поле обязательно для заполнения!',
+            'email' => 'Адрес элетронной почты введен не верно!',
+            'url' => 'URL адрес введен неверно',
+            'url.unique' => 'Сайт с таким URL уже есть в каталоге!'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -94,7 +110,14 @@ class LinksController extends Controller
             'catalog_id' => 'required|numeric'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'required' => 'Это поле обязательно для заполнения!',
+            'email' => 'Адрес элетронной почты введен не верно!',
+            'url' => 'URL адрес введен неверно',
+            'url.unique' => 'Сайт с таким URL уже есть в каталоге!'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -146,23 +169,61 @@ class LinksController extends Controller
             'file' => 'required',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'required' => 'Это поле обязательно для заполнения!',
+            'mimes' => 'Разрешено загружать файлы: csv,xlsx,xls!'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         } else {
+           //
+            $extension = strtolower($request->file('file')->getClientOriginalExtension());
 
-            //$path = $request->file('file')->getRealPath();
-            Excel::import(new LinksImport, $request->file('file'));
+            if ($extension == 'csv' or $extension == 'txt') {
+                $path = $request->file('file')->getRealPath();
 
-            return redirect('admin/links/import')->with('success', 'Импорт заврешен');
+                $n = LinksImportFromCsv::import($path);
+
+            } else {
+                $n =  Excel::import(new LinksImport, $request->file('file'));
+            }
+
+            return redirect('admin/links/import')->with('success', 'Импорт заврешен. Импортировано ' . $n.' ссылок');
         }
     }
 
     public function export()
     {
-
+        return view('admin.links.export');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function statusLinks(Request $request)
+    {
+        if ($request->has('action')) {
+
+            if ($request->has('activate')) {
+                $temp = [];
+
+                foreach ($request->activate as $id) {
+                    if (is_numeric($id)) {
+                        $temp[] = $id;
+                    }
+                }
+
+                Links::whereIN('id', $temp)->update(['status' => $request->action]);
+
+                return redirect('admin/links/list')->with('success', 'Данные обновлены');
+            }
+        }
+
+        abort(500);
+    }
 
 }

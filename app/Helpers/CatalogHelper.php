@@ -69,14 +69,13 @@ function ShowTree(&$option, $parent_id, &$lvl = 0)
  * @param $parent_id
  * @return array
  */
-function  topbarMenu(&$topbar, $parent_id)
+function topbarMenu(&$topbar, $parent_id)
 {
     if (is_numeric($parent_id)) {
         $result = \App\models\Catalog::where('id', $parent_id);
 
         if ($result->count() > 0) {
-           $catalog = $result->first();
-
+            $catalog = $result->first();
             $topbar[] = [$catalog->id, $catalog->name];
 
             topbarMenu($topbar, $catalog->parent_id);
@@ -95,7 +94,7 @@ function  topbarMenu(&$topbar, $parent_id)
 function ShowSubCat($id)
 {
     $catalogs = \App\models\Catalog::selectRaw('catalog.id, catalog.name, COUNT(links.status) AS number_links')
-        ->leftJoin('links','links.catalog_id','=','catalog.id')
+        ->leftJoin('links', 'links.catalog_id', '=', 'catalog.id')
         ->groupBy('catalog.id')
         ->groupBy('catalog.name')
         ->orderBy('catalog.name')
@@ -110,7 +109,7 @@ function ShowSubCat($id)
         }
     }
 
-    return implode(', ',$sub_category_list);
+    return implode(', ', $sub_category_list);
 }
 
 

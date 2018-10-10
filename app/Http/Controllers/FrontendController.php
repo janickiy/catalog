@@ -49,9 +49,11 @@ class FrontendController extends Controller
         }
 
         if ($id) {
-            $links = Links::where('catalog_id',$id)->paginate(10);
+            $links = Links::where('catalog_id',$id)->where('status',1)->paginate(10);
+            $rank = $links->firstItem();
         } else {
-            $links = Links::orderBy('id', 'DESC')->take(5)->get();
+            $links = Links::orderBy('id', 'DESC')->where('status',1)->take(5)->get();
+            $rank = 1;
         }
 
         if ($id > 0) {
@@ -68,7 +70,7 @@ class FrontendController extends Controller
             }
         }
 
-        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway'))->with('title','Каталог сайтов');
+        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway', 'rank'))->with('title','Каталог сайтов');
     }
 
     /**
@@ -79,7 +81,7 @@ class FrontendController extends Controller
     {
         if (!is_numeric($id)) abort(500);
 
-        $link = Links::where('id',$id)->first();
+        $link = Links::where('id',$id)->where('status',1)->first();
 
         if ($link) {
             return view('frontend.info', compact('link'))->with('title',$link->name);
@@ -161,7 +163,12 @@ class FrontendController extends Controller
 
             Links::where('id',$id)->update(['views' => $link->views + 1]);
 
-            return redirect($link->url);
+            if (substr($link->url, 0, 7) == "http://" or substr($link->url, 0, 8) == "https://")
+                $redirect = 'http://' . $link->url;
+            else
+                $redirect = $link->url;
+
+            return redirect($redirect);
         }
 
         abort(404);

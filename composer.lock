@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d22b86089e91b94064a0651d2ad6295",
+    "content-hash": "f4b224e8e86cabd4576587135493fc5c",
     "packages": [
         {
             "name": "bestmomo/laravel5-3-installer",
@@ -1133,6 +1133,70 @@
             "time": "2017-08-31T15:12:20+00:00"
         },
         {
+            "name": "league/csv",
+            "version": "9.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/csv.git",
+                "reference": "60ea563773f1c50162a948c44901c93b9a0aee56"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/60ea563773f1c50162a948c44901c93b9a0aee56",
+                "reference": "60ea563773f1c50162a948c44901c93b9a0aee56",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=7.0.10"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "suggest": {
+                "ext-iconv": "Needed to ease transcoding CSV using iconv stream filters"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Csv\\": "src"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://github.com/nyamsprod/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Csv data manipulation made easy in PHP",
+            "homepage": "http://csv.thephpleague.com",
+            "keywords": [
+                "csv",
+                "export",
+                "filter",
+                "import",
+                "read",
+                "write"
+            ],
+            "time": "2017-08-18T10:27:55+00:00"
+        },
+        {
             "name": "league/flysystem",
             "version": "1.0.47",
             "source": {
@@ -1619,16 +1683,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.0.4",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "fa6ee28600d21d49b2b4e1006b48426cec8e579c"
+                "reference": "d0230c5c77a7e3cfa69446febf340978540958c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/fa6ee28600d21d49b2b4e1006b48426cec8e579c",
-                "reference": "fa6ee28600d21d49b2b4e1006b48426cec8e579c",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/d0230c5c77a7e3cfa69446febf340978540958c0",
+                "reference": "d0230c5c77a7e3cfa69446febf340978540958c0",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1708,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -1666,7 +1730,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-09-18T07:03:24+00:00"
+            "time": "2018-10-10T09:24:14+00:00"
         },
         {
             "name": "paragonie/random_compat",

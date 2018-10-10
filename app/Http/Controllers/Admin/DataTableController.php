@@ -80,8 +80,16 @@ class DataTableController extends Controller
 
         return Datatables::of($links)
 
+            ->addColumn('checkbox', function ($links) {
+                return '<input type="checkbox" title="Отметить/Снять отметку" value="' . $links->id . '" name="activate[]">';
+            })
+
+            ->addColumn('status_link', function ($links) {
+                return $links->status;
+            })
+
             ->editColumn('catalog', function ($links) {
-                return $links->catalog->name;
+                return isset($links->catalog->name) ? $links->catalog->name : '';
             })
 
             ->editColumn('status', function ($links) {
@@ -95,7 +103,7 @@ class DataTableController extends Controller
                 return $editBtn . $deleteBtn;
             })
 
-            ->rawColumns(['actions'])->make(true);
+            ->rawColumns(['actions','checkbox'])->make(true);
     }
 
 }

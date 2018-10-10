@@ -2,9 +2,7 @@
 
 namespace App\Http\Start;
 
-use App\Models\Permission;
-use App\Models\RoleUser;
-use App\Models\PermissionRole;
+use App\Models\{Links,Permission,RoleUser,PermissionRole};
 
 class Helpers
 {
@@ -24,5 +22,4 @@ class Helpers
             return $has_permit->count();
         } else return 0;
     }
-
 }

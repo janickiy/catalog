@@ -19,13 +19,13 @@ class LinksImport implements ToModel, WithBatchInserts
      */
     public function model(array $row)
     {
+        $n = 0;
         /*
         $name = trim($row['nazvanie_kompanii']);
         $url = trim($row['www']);
         $email = trim($row['e_mail']);
         $telefon = trim($row['telefon']);
         */
-
 
         $city = trim($row[0]);
         $name = trim($row[1]);
@@ -36,40 +36,41 @@ class LinksImport implements ToModel, WithBatchInserts
 
         if ($url && isDomainAvailible($url, 5)) {
 
-            $url_link =  $url;
+            $url_link = $url;
 
-            if (substr( $url_link, 0, 7) == "http://") $url_link = str_replace('http://', '', $url_link);
-            if (substr( $url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
-            if (strpos( $url_link, '/') > 0) list($url_link) = explode('/', $url_link);
+            if (substr($url_link, 0, 7) == "http://") $url_link = str_replace('http://', '', $url_link);
+            if (substr($url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
+            if (strpos($url_link, '/') > 0) list($url_link) = explode('/', $url_link);
 
-            if (Links::where('url', '=',  $url_link)->count() == 0) {
-            $tags_row = @get_meta_tags($url);
+            if (Links::where('url', '=', $url_link)->count() == 0) {
+                $tags_row = @get_meta_tags($url);
 
-            $tags = [];
+                $tags = [];
 
-            if ($tags_row) {
-                foreach($tags_row as $mkey => $mval) {
-                    $tags[$mkey] = str_to_utf8($mval);
-                }
-            }
-
-            $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
-            $description = isset($tags['description']) ? $tags['description'] : '';
-
-            if ($description) {
-                $arr = explode('/', $category);
-                $n_arr = [];
-
-                $parent_id = 0;
-
-                for ($i = 0; $i < count($arr); $i++) {
-                    $parent_id = $this->importCategory(trim($arr[$i]), $parent_id);
-                    $n_arr[$i] = ['name' => $arr[$i], 'id' => $parent_id];
+                if ($tags_row) {
+                    foreach ($tags_row as $mkey => $mval) {
+                        $tags[$mkey] = str_to_utf8($mval);
+                    }
                 }
 
-                $category = array_pop($n_arr);
+                $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
+                $description = isset($tags['description']) ? $tags['description'] : '';
 
-                    return Links::create([
+                if ($description) {
+                    $n++;
+                    $arr = explode('/', $category);
+                    $n_arr = [];
+
+                    $parent_id = 0;
+
+                    for ($i = 0; $i < count($arr); $i++) {
+                        $parent_id = $this->importCategory(trim($arr[$i]), $parent_id);
+                        $n_arr[$i] = ['name' => $arr[$i], 'id' => $parent_id];
+                    }
+
+                    $category = array_pop($n_arr);
+
+                    Links::create([
                             'name' => $name,
                             'url' => $url_link,
                             'email' => $email,
@@ -83,6 +84,8 @@ class LinksImport implements ToModel, WithBatchInserts
                             'status' => 1,
                             'token' => md5($url . time())]
                     );
+
+                    return $n;
                 }
             }
         }
@@ -124,11 +127,5 @@ class LinksImport implements ToModel, WithBatchInserts
             }
         }
     }
-
-    /**
-     * @param $domain
-     * @return bool
-     */
-
 
 }
