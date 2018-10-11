@@ -28,7 +28,7 @@ class FrontendController extends Controller
             ->where('catalog.parent_id', $id)
             ->groupBy('catalog.id')
             ->groupBy('catalog.name')
-            ->groupBy('catalog.catalog.image')
+            ->groupBy('catalog.image')
             ->orderBy('catalog.name')
             ->get();
 
