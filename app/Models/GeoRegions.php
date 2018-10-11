@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GeoCountries extends Model
+class GeoRegions extends Model
 {
 	protected $table = 'geo_regions';
     protected $primaryKey = 'id';

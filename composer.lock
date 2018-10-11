@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4b224e8e86cabd4576587135493fc5c",
+    "content-hash": "06cdfc4bae51cf1e98e5df08dd1095a8",
     "packages": [
         {
             "name": "bestmomo/laravel5-3-installer",

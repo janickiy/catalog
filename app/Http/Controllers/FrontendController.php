@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Start\Helpers;
-use App\Models\{Catalog,Links};
+use App\Models\{Catalog,Links,Feedback};
 use Validator;
 use URL;
+use Mail;
 
 class FrontendController extends Controller
 {
@@ -18,6 +19,9 @@ class FrontendController extends Controller
      */
     public function index(Request $request, $id = 0)
     {
+        $title = 'Главная страница';
+        $description = '';
+        $keywords = '';
 
         $catalogs = Catalog::selectRaw('catalog.name,catalog.id,catalog.image,COUNT(links.status) AS number_links')
             ->leftJoin('links','links.catalog_id','=','catalog.id')
@@ -71,9 +75,13 @@ class FrontendController extends Controller
 
             $catalogRow = Catalog::select('name')->where('id',$id)->first();
             $catalog_name = $catalogRow->name;
+
+            $title = $catalogRow->name;
+            $description = $catalogRow->description ? $catalogRow->description : $description;
+            $keywords = $catalogRow->keywords ? $catalogRow->keywords : $keywords;
         }
 
-        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway', 'rank','catalog_name'))->with('title','Каталог сайтов');
+        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway', 'rank','catalog_name', 'description', 'keywords'))->with('title',$title);
     }
 
     /**
@@ -187,6 +195,49 @@ class FrontendController extends Controller
 
     public function contact()
     {
+        return view('frontend.contact')->with('title', 'Обратная связь');
+    }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sendMsg(Request $request)
+    {
+        $rules = [
+            'message' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'captcha' => 'required|captcha',
+        ];
+
+        $message = [
+            'name.required' => 'Укажите Ваше имя!',
+            'email.required' => 'Не указан Email!',
+            'email.email' => 'Не верно указан Email!',
+            'message.required' => 'Введите сообщение',
+            'catalog_id.required' => 'Выберите раздел!',
+            'captcha.required' => 'Не указан защитный код!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $message);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $message['email'] = $request->email;
+            $message['name'] = $request->name;
+            $message['msg'] = $request->message;
+
+            Feedback::create(array_merge($request->all(),['ip' => $request->getClientIp()]));
+
+            Mail::send('emails.feedback', ['email' => $message['email'], 'name' => $message['name'], 'msg' => $message['msg']], function($message)
+            {
+                $message->from('no-reply@' . $_SERVER['SERVER_NAME'], getSetting('SITE_NAME'));
+                $message->to(getSetting('EMAIL'), getSetting('SITE_NAME'))->subject('Cообщение с сайта ' . $_SERVER['SERVER_NAME']);
+            });
+
+            return redirect('/contact')->with('success', 'Спасибо за Ваше сообщение! Вы получите ответ как можно скоро. ');
+        }
     }
 }

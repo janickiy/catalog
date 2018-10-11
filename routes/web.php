@@ -20,6 +20,7 @@ Route::post('/add', 'FrontendController@add')->name('add');
 Route::get('/redirect/{id}', 'FrontendController@redirect')->name('redirect')->where('id', '[0-9]+');
 Route::get('/rules', 'FrontendController@rules')->name('rules');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
+Route::post('/sendmsg', 'FrontendController@sendMsg')->name('sendmsg');
 
 Auth::routes();
 
@@ -78,6 +79,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::delete('delete/{id}','Admin\RoleController@destroy')->name('admin.role.delete')->middleware(['permission:delete_role'])->where('id', '[0-9]+');
     });
 
+    Route::group(['prefix' => 'feedback'], function () {
+        Route::get('list','Admin\FeedbackController@list')->name('admin.feedback.list');
+    });
+
     Route::group(['prefix' => 'settings'], function () {
         Route::get('list','Admin\SettingsController@list')->name('admin.settings.list');
         Route::post('store', 'Admin\SettingsController@store')->name('admin.settings.store');
@@ -94,6 +99,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::any('role', 'Admin\DataTableController@getRole')->name('admin.datatable.role');
         Route::any('links', 'Admin\DataTableController@getLinks')->name('admin.datatable.links');
         Route::any('settings', 'Admin\DataTableController@getSettings')->name('admin.datatable.settings');
+        Route::any('messages', 'Admin\DataTableController@getMessages')->name('admin.datatable.messages');
     });
 
 });

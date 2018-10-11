@@ -238,6 +238,12 @@ Use search to find needed section.
                 </ul>
             </li>
 
+            <li {!! Request::is('admin/feedback*') ? ' class="active"' : '' !!}>
+                <a href="{{ URL::route('admin.feedback.list') }}">
+                    <i class="fa fa-fw fa-envelope"></i> <span class="menu-item-parent">Сообщения с сайта</span>
+                </a>
+            </li>
+
             <li {!! Request::is('admin/settings*') ? ' class="active"' : '' !!}>
                 <a href="{{ URL::route('admin.settings.list') }}"><i class="fa fa-fw fa-cogs"></i> Настройки</a>
             </li>

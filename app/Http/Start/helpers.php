@@ -2,7 +2,7 @@
 
 namespace App\Http\Start;
 
-use App\Models\{Links,Permission,RoleUser,PermissionRole};
+use App\Models\{Permission,RoleUser,PermissionRole};
 
 class Helpers
 {
@@ -12,9 +12,11 @@ class Helpers
         $user_permissions = Permission::whereIn('name', $permissions)->get();
         $permission_id = [];
         $i = 0;
+
         foreach ($user_permissions as $value) {
             $permission_id[$i++] = $value->id;
         }
+
         $role = RoleUser::where('user_id', $user_id)->first();
 
         if (count($permission_id) && isset($role->role_id)) {

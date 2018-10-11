@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\Http\Requests;
 use App\User;
-use App\Models\{Links, Role, Settings};
+use App\Models\{Links,Role,Settings,Feedback};
 use App\Http\Start\Helpers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -104,6 +104,16 @@ class DataTableController extends Controller
             })
 
             ->rawColumns(['actions','checkbox'])->make(true);
+    }
+
+    public function getMessages()
+    {
+        $messages = Feedback::select('*');
+
+        return Datatables::of($messages)
+
+
+           ->make(true);
     }
 
 }

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('title', $title)
-@section('description', $link->description)
+@section('description', '')
 @section('keywords', $link->keywords)
 
 
@@ -13,7 +13,11 @@
 
     <h1>{{ $link->name }}</h1>
 
-    <p>{!! $link->description !!}</p>
+    <p>{!! $link->full_description !!}</p>
+
+    @if($link->phone)<p>Тел.: {!! $link->phone !!}</p>@endif
+
+    @if($link->city)<p>Город: {!! $link->city !!}</p>@endif
 
     <br />
     Перейти на сайт: <a href="http://{{ url('redirect/' . $link->id) }}">{{ $link->url }}</a>
