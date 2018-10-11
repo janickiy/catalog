@@ -19,7 +19,7 @@ Route::get('/addurl', 'FrontendController@addurl')->name('addurl');
 Route::post('/add', 'FrontendController@add')->name('add');
 Route::get('/redirect/{id}', 'FrontendController@redirect')->name('redirect')->where('id', '[0-9]+');
 Route::get('/rules', 'FrontendController@rules')->name('rules');
-
+Route::get('/contact', 'FrontendController@contact')->name('contact');
 
 Auth::routes();
 

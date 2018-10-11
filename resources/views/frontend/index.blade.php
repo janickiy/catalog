@@ -6,93 +6,10 @@
 
 @section('css')
 
-    <style>
-
-        html,
-        body {
-            overflow-x: hidden; /* Prevent scroll on narrow devices */
-        }
-
-        body {
-            padding-top: 56px;
-        }
-
-        @media (max-width: 767.98px) {
-            .offcanvas-collapse {
-                position: fixed;
-                top: 56px; /* Height of navbar */
-                bottom: 0;
-                width: 100%;
-                padding-right: 1rem;
-                padding-left: 1rem;
-                overflow-y: auto;
-                background-color: var(--gray-dark);
-                transition: -webkit-transform .3s ease-in-out;
-                transition: transform .3s ease-in-out;
-                transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
-                -webkit-transform: translateX(100%);
-                transform: translateX(100%);
-            }
-
-            .offcanvas-collapse.open {
-                -webkit-transform: translateX(-1rem);
-                transform: translateX(-1rem); /* Account for horizontal padding on navbar */
-            }
-        }
-
-
-        .nav-scroller .nav {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: nowrap;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            color: rgba(255, 255, 255, .75);
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-underline .nav-link {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: .875rem;
-            color: var(--secondary);
-        }
-
-        .nav-underline .nav-link:hover {
-            color: var(--blue);
-        }
-
-        .nav-underline .active {
-            font-weight: 500;
-            color: var(--gray-dark);
-        }
-
-
-        .border-bottom {
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .box-shadow {
-            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-        }
-
-
-    </style>
 
 @endsection
 
 @section('content')
-
-    <ul class="list-inline">
-        <li><a href="">sdasd.</a></li>
-        <li>sdasd.</li>
-    </ul>
-
 
     <div class="row">
         <div class="col-sm-12 bg-white rounded box-shadow" style="margin:10px">
@@ -128,20 +45,20 @@
         </div>
     </div>
 
-
     {!! isset($pathway) ? $pathway : '' !!}
-
 
     <div class="row">
 
-
-
         <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8   bg-white rounded box-shadow">
-            <div style="text-align: right;">
-                <a class="btn btn-success" href="{{ URL::route('addurl') }}">Добавить сайт</a>
-            </div>
-            <h2 style="padding-bottom: 20px">Suggestions</h2>
 
+            <div id="logo" >
+                <div id="logopos" syle="float: right !important;">
+
+                </div>
+            </div>
+
+
+            <h2 style="padding-bottom: 20px">@if(isset($catalog_name)) {{$catalog_name}}@elseНовые ссылки@endif</h2>
 
             <table width="100%" cellspacing="0" cellpadding="0" border="0">
 
@@ -183,13 +100,7 @@
             </table>
             @endforeach
 
-
-
         </div>
-
-
-
-
 
         <div style="margin:10px" class="" col-sm-12 col-md-4 col-lg-2 bg-white rounded box-shadow">
             hjkljj fffffffffffffffffffffffffffffffffffffffffffffff
@@ -201,8 +112,6 @@
         </div>
 
     </div>
-
-
 
 
 @endsection

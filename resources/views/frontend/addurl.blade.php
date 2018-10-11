@@ -10,7 +10,11 @@
 
 @section('content')
 
-    {!!  getSetting('NOTE') !!}
+    @if(getSetting('NOTE') != '')
+    <div class="alert alert-info" role="alert">
+        {!! getSetting('NOTE') !!}
+    </div>
+    @endif
 
     <p>*-обязательные поля</p>
 

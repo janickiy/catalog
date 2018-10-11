@@ -68,9 +68,12 @@ class FrontendController extends Controller
                     $pathway .= '» <a href="' . URL::route('index', ['id' => $arraypathway[$i][0]]) . '">' . $arraypathway[$i][1] . '</a>';
                 }
             }
+
+            $catalogRow = Catalog::select('name')->where('id',$id)->first();
+            $catalog_name = $catalogRow->name;
         }
 
-        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway', 'rank'))->with('title','Каталог сайтов');
+        return view('frontend.index', compact('arr','number', 'links', 'id', 'pathway', 'rank','catalog_name'))->with('title','Каталог сайтов');
     }
 
     /**
@@ -180,5 +183,10 @@ class FrontendController extends Controller
     public function rules()
     {
         return view('frontend.rules')->with('title','Правила каталога сайтов');
+    }
+
+    public function contact()
+    {
+
     }
 }
