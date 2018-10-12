@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Links extends Model
 {
+    const PER_PAGE = 1000;
+
 	protected $table = 'links';
     protected $primaryKey = 'id';
 

@@ -22,6 +22,21 @@ Route::get('/rules', 'FrontendController@rules')->name('rules');
 Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::post('/sendmsg', 'FrontendController@sendMsg')->name('sendmsg');
 
+
+Route::get('/sitemap.xml', 'FrontendController@sitemap')->name('sitemap');
+
+
+Route::get('/sitemaps/maplinks{page}.xml', 'FrontendController@maplinks')->name('maplinks')->where('page', '[0-9]+');
+
+
+Route::get('/sitemaps/mapcatalogs{page}.xml', 'FrontendController@mapcatalogs')->name('mapcatalogs')->where('page', '[0-9]+');
+
+
+
+
+
+
+
 Auth::routes();
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');

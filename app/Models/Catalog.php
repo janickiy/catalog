@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Catalog extends Model
 {
+    const PER_PAGE = 1000;
+
 	protected $table = 'catalog';
     protected $primaryKey = 'id';
 

@@ -193,6 +193,9 @@ class FrontendController extends Controller
         return view('frontend.rules')->with('title','Правила каталога сайтов');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function contact()
     {
         return view('frontend.contact')->with('title', 'Обратная связь');
@@ -239,5 +242,48 @@ class FrontendController extends Controller
 
             return redirect('/contact')->with('success', 'Спасибо за Ваше сообщение! Вы получите ответ как можно скоро. ');
         }
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function sitemap()
+    {
+        $total_links = Links::where('status', 1)->count();
+        $l = intval(($total_links - 1) / Links::PER_PAGE) + 1;
+
+        $total_categories = Catalog::count();
+        $c = intval(($total_categories - 1) / Catalog::PER_PAGE) + 1;
+
+
+        return response()->view('frontend.sitemap', compact('l','c'))->header('Content-type', 'text/xml');
+    }
+
+    /**
+     * @param int $page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function maplinks($page=1)
+    {
+        $limit = Links::PER_PAGE;
+        $offset = Links::PER_PAGE * ($page-1);
+
+        $links = Links::where('status', 1)->limit($limit)->offset($offset)->get();
+
+        return response()->view('frontend.maplinks', compact('links'))->header('Content-type', 'text/xml');
+    }
+
+    /**
+     * @param int $page
+     * @return \Illuminate\Http\Response
+     */
+    public function mapcatalogs($page=1)
+    {
+        $limit = Catalog::PER_PAGE;
+        $offset = Catalog::PER_PAGE * ($page-1);
+
+        $catalogs = Catalog::limit($limit)->offset($offset)->get();
+
+        return response()->view('frontend.mapcatalogs', compact('catalogs'))->header('Content-type', 'text/xml');
     }
 }
