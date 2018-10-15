@@ -1,2 +1,3 @@
 User-agent: *
-Disallow:
+Host: catalog.janicky.com
+Sitemap: http://catalog.janicky.com/sitemap.xml
