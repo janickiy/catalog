@@ -53,10 +53,14 @@ class LinksImport implements ToModel, WithBatchInserts
                     }
                 }
 
-                $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
-                $description = isset($tags['description']) ? $tags['description'] : '';
+                $keywords = isset($tags['keywords']) ? trim($tags['keywords']) : '';
+                $full_description = isset($tags['description']) ? trim($tags['description']) : '';
 
-                if ($description) {
+                preg_match_all("/(.+?)(\s+)([А-Я]{2,})(\.|\?|!){1,}(\s|<br(| \/)>|<\/p>|<\/div>)/ius",$row['full_description'],$desc_out);
+
+                $description = $desc_out[0][0];
+
+                if ($description && $full_description != '\xF0\x9F\x91\x8D') {
                     $n++;
                     $arr = explode('/', $category);
                     $n_arr = [];
@@ -76,9 +80,9 @@ class LinksImport implements ToModel, WithBatchInserts
                             'email' => $email,
                             'phone' => $phone,
                             'city' => $city,
-                            'description' => $description,
+                            'description' => mb_ucfirst($description),
                             'keywords' => $keywords,
-                            'full_description' => $description,
+                            'full_description' => mb_ucfirst($full_description),
                             'catalog_id' => isset($category['id']) ? $category['id'] : 3,
                             'time_check' => Carbon::now(),
                             'status' => 1,

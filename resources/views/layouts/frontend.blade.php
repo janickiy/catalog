@@ -10,6 +10,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="yandex-verification" content="4f86550c90840ae3" />
+
     <!-- #CSS Links -->
     <!-- Basic Styles -->
 
