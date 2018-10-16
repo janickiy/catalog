@@ -60,7 +60,7 @@ class LinksImport implements ToModel, WithBatchInserts
 
                 $description = $desc_out[0][0];
 
-                if ($description && $full_description != '\xF0\x9F\x91\x8D') {
+                if ($description) {
                     $n++;
                     $arr = explode('/', $category);
                     $n_arr = [];
@@ -75,14 +75,14 @@ class LinksImport implements ToModel, WithBatchInserts
                     $category = array_pop($n_arr);
 
                     Links::create([
-                            'name' => $name,
+                            'name' => removeEmoji($name),
                             'url' => $url_link,
                             'email' => $email,
                             'phone' => $phone,
                             'city' => $city,
-                            'description' => mb_ucfirst($description),
+                            'description' => mb_ucfirst(removeEmoji(trim($description))),
                             'keywords' => $keywords,
-                            'full_description' => mb_ucfirst($full_description),
+                            'full_description' => mb_ucfirst(removeEmoji(trim($full_description))),
                             'catalog_id' => isset($category['id']) ? $category['id'] : 3,
                             'time_check' => Carbon::now(),
                             'status' => 1,

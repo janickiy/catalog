@@ -9,6 +9,11 @@ use Carbon\Carbon;
 class LinksImportFromCsv
 {
 
+    /**
+     * @param $path
+     * @return int
+     * @throws \League\Csv\Exception
+     */
    public static function import($path)
    {
        $n = 0;
@@ -67,14 +72,14 @@ class LinksImportFromCsv
                        $category = array_pop($n_arr);
 
                         Links::create([
-                               'name' => $name,
+                               'name' => removeEmoji($name),
                                'url' => $url_link,
                                'email' => $email,
                                'phone' => $phone,
                                'city' => $city,
-                               'description' => mb_ucfirst($description),
+                               'description' => mb_ucfirst(removeEmoji(trim($description))),
                                'keywords' => $keywords,
-                               'full_description' => mb_ucfirst($full_description),
+                               'full_description' => mb_ucfirst(removeEmoji(trim($full_description))),
                                'catalog_id' => isset($category['id']) ? $category['id'] : 3,
                                'time_check' => Carbon::now(),
                                'status' => 1,
