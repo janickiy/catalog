@@ -10,8 +10,12 @@
 
 @section('content')
 
+    <div class="col-sm-12 bg-white rounded box-shadow" style="margin:10px">
+
+        <h1>{{ $title }}</h1>
+
     @if(getSetting('NOTE') != '')
-    <div class="alert alert-info" role="alert">
+    <div class="alert alert-info" role="alert" >
         {!! getSetting('NOTE') !!}
     </div>
     @endif
@@ -181,6 +185,8 @@
     </div>
 
     {!! Form::close() !!}
+
+    </div>
 
 @endsection
 

@@ -75,10 +75,11 @@
                         <td></td>
                         <td style="padding-bottom:25px;">
                             <div class="border-bottom border-gray">
-                                <address><a href="" target="_blank">
+                                <address ><a href="http://{{ $link->url }}" target="_blank">
                                     {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $links->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
                                 </a>
                                 {{ $link->description }}
+                                    <br>
                                     <br>
                                     <a href="http://{{ $link->url }}" target="_blank">{{ $link->url }}</a>&nbsp; &nbsp; &nbsp;
                                    <span class="text-muted">
@@ -100,7 +101,7 @@
 
         </div>
 
-        <div style="margin:10px" class="" col-sm-12 col-md-4 col-lg-2 bg-white rounded box-shadow">
+        <div style="margin:10px" class="col-sm-12 col-md-4 col-lg-2 bg-white rounded box-shadow">
             hjkljj fffffffffffffffffffffffffffffffffffffffffffffff
         </div>
 

@@ -102,8 +102,8 @@
 
                                 {!! Form::textarea('description', old('description', isset($link) ? $link->description : null), ['placeholder' =>'Описание','class' => 'form-control', 'rows' => 2]) !!}
 
-                                @if ($errors->has('description'))
-                                    <span class="text-danger">{{ $errors->first('description') }}</span>
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
                                 @endif
                             </div>
                         </div>

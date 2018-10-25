@@ -11,6 +11,8 @@
 
 @section('content')
 
+    <div class="col-sm-12 bg-white rounded box-shadow" style="margin:10px">
+
     <h1>{{ $link->name }}</h1>
 
     <p>{!! $link->full_description !!}</p>
@@ -61,16 +63,11 @@
         </tr>
     </table>
 
-
+    </div>
 
 @endsection
 
 @section('js')
-
-
-
-
-
 
 
 

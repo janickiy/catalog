@@ -11,6 +11,8 @@
 
 @section('content')
 
+    <div class="col-sm-12 bg-white rounded box-shadow" style="margin:10px">
+
     <h1>{{ $title }}</h1>
 
     <p>*-обязательные поля</p>
@@ -76,6 +78,8 @@
     </div>
 
     {!! Form::close() !!}
+
+    </div>
 
 @endsection
 

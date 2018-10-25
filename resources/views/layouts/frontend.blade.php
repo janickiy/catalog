@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Каталог сайтов | @yield('title')</title>
+    <title>Белый каталог сайтов | @yield('title')</title>
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -36,7 +36,8 @@
         }
 
         body {
-            padding-top: 56px;
+            padding-top: 50px;
+            background-color: #FFFAFA;
         }
 
         @media (max-width: 767.98px) {
@@ -104,6 +105,10 @@
         }
 
 
+        .bg-white {
+            background-color: #FFFFFF;
+        }
+
     </style>
 
 </head>
@@ -113,7 +118,7 @@
     <nav id="w1" class="navbar-inverse navbar-fixed-top navbar">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">My Application</a></div>
+                <a class="navbar-brand" href="/">Белый каталог сайтов</a></div>
             <div id="w1-collapse" class="collapse navbar-collapse">
                 <ul id="w2" class="navbar-nav navbar-right nav">
                     <li class="active"><a href="{{  URL::route('index') }}">Главная</a></li>
@@ -133,7 +138,12 @@
 
         @yield('content')
 
+        <p>© Copyright {{ date("Y") }}, Белый каталог сайтов</p>
+
     </div>
+
+
+
 </div>
 
 <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
@@ -153,5 +163,8 @@
 
 @yield('js')
 
+
+
 </body>
+
 </html>
