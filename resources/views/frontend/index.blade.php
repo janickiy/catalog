@@ -25,7 +25,7 @@
                                                 <img border="0" width="30px" src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/folder.gif') }}">
                                             </td>
                                             <td style="padding:6px">
-                                                <a href="{{ URL::route('index', ['id' => $arr[$i][$j][1]]) }}">{{ $arr[$i][$j][0] }}</a>
+                                                <strong><a href="{{ URL::route('index', ['id' => $arr[$i][$j][1]]) }}">{{ $arr[$i][$j][0] }}</a></strong>
                                                 <span>({{ $arr[$i][$j][3] }})</span><br>
                                                 <div class="subcat">
 
