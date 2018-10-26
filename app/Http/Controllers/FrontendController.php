@@ -95,6 +95,9 @@ class FrontendController extends Controller
         $link = Links::where('id',$id)->where('status',1)->first();
 
         if ($link) {
+
+            Links::where('id',$id)->update(['views' => $link->views + 1]);
+
             return view('frontend.info', compact('link'))->with('title',$link->name);
         }
 
@@ -172,14 +175,14 @@ class FrontendController extends Controller
 
         if ($link) {
 
-            Links::where('id',$id)->update(['views' => $link->views + 1]);
+
 
             if (substr($link->url, 0, 7) == "http://" or substr($link->url, 0, 8) == "https://")
-                $redirect = 'http://' . $link->url;
-            else
                 $redirect = $link->url;
+            else
+                $redirect = 'http://' . $link->url;
 
-            return redirect($redirect);
+            return redirect()->away($redirect);
         }
 
         abort(404);

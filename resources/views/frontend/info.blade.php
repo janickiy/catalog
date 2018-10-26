@@ -17,12 +17,14 @@
 
     <p>{!! $link->full_description !!}</p>
 
+    <p>Раздел: {!! $link->catalog->name !!}</p>
+
     @if($link->phone)<p>Тел.: {!! $link->phone !!}</p>@endif
 
     @if($link->city)<p>Город: {!! $link->city !!}</p>@endif
 
     <br />
-    Перейти на сайт: <a href="http://{{ url('redirect/' . $link->id) }}">{{ $link->url }}</a>
+    Перейти на сайт: <a href="{{ url('redirect/' . $link->id) }}">http://{{ $link->url }}</a>
 
     <table border="0" width=100%>
         <tr>
