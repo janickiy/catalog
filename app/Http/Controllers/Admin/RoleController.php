@@ -3,24 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Models\{Role, Permission, PermissionRole};
-use App\Http\Start\Helpers;
-use Validator;
 use App\Http\Controllers\Controller;
+use Validator;
+use URL;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function list()
     {
         return view('admin.role.list')->with('title', 'Роли');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         $permissions = Permission::get();
@@ -44,18 +44,17 @@ class RoleController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        } else {
-            $insertId = Role::create($request->all())->id;
-
-            if (!$insertId) abort(500);
-
-            if ($request->permission)
-                foreach ($request->permission as $key => $value) {
-                    PermissionRole::create(['permission_id' => $value, 'role_id' => $insertId]);
-                }
-
-            return redirect('admin/role/list')->with('success', 'Информация успешно добавлена');
         }
+        $insertId = Role::create($request->all())->id;
+
+        if (!$insertId) abort(500);
+
+        if ($request->permission)
+            foreach ($request->permission as $key => $value) {
+                PermissionRole::create(['permission_id' => $value, 'role_id' => $insertId]);
+            }
+
+        return redirect(URL::route('admin.role.list'))->with('success', 'Информация успешно добавлена');
     }
 
     /**
@@ -64,7 +63,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::where('id', $id)->first();
+        $role = Role::find($id);
+
+        if (!$role) abort(404);
+
         $permissions = Permission::get();
         $storedPermissionsList = PermissionRole::select('permission_id')->where('role_id', $id)->get();
         $stored_permissions = [];
@@ -75,7 +77,7 @@ class RoleController extends Controller
             }
         }
 
-        return view('admin.role.create_edit', compact('role','permissions', 'stored_permissions'));
+        return view('admin.role.create_edit', compact('role', 'permissions', 'stored_permissions'));
     }
 
     /**
@@ -94,42 +96,45 @@ class RoleController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        } else {
-
-            $data['name'] = $request->name;
-            $data['display_name'] = $request->display_name;
-            $data['description'] = $request->description;
-
-            Role::where('id', $request->id)->update($data);
-
-            $stored_permissions_lists = PermissionRole::select('permission_id')->where('role_id', $request->id)->get();
-            $stored_permissions = [];
-
-            if (!empty($stored_permissions_lists)) {
-                foreach ($stored_permissions_lists as $key => $value) {
-                    $stored_permissions[$key] = $value->permission_id;
-                }
-            }
-
-            $permission = isset($request->permission) ? $request->permission : [];
-
-            if (!empty($stored_permissions)) {
-                foreach ($stored_permissions as $key => $value) {
-                    if (!in_array($value, $permission))
-                        PermissionRole::where(['permission_id' => $value, 'role_id' => $request->id])->delete();
-                }
-            }
-
-            if (!empty($permission)) {
-                foreach ($permission as $key => $value) {
-                    if (!in_array($value, $stored_permissions)) {
-                        PermissionRole::create(['permission_id' => $value, 'role_id' => $request->id]);
-                    }
-                }
-            }
-
-            return redirect('admin/role/list')->with('success', 'Данные обновлены');
         }
+
+        $role = Role::find($request->id);
+
+        if (!$role) abort(404);
+
+        $role->name = $request->input('name');
+        $role->display_name = $request->input('display_name');
+        $role->description = $request->input('description');
+        $role->save();
+
+        $stored_permissions_lists = PermissionRole::select('permission_id')->where('role_id', $request->id)->get();
+        $stored_permissions = [];
+
+        if (!empty($stored_permissions_lists)) {
+            foreach ($stored_permissions_lists as $key => $value) {
+                $stored_permissions[$key] = $value->permission_id;
+            }
+        }
+
+        $permission = isset($request->permission) ? $request->permission : [];
+
+        if (!empty($stored_permissions)) {
+            foreach ($stored_permissions as $key => $value) {
+                if (!in_array($value, $permission))
+                    PermissionRole::where(['permission_id' => $value, 'role_id' => $request->id])->delete();
+            }
+        }
+
+        if (!empty($permission)) {
+            foreach ($permission as $key => $value) {
+                if (!in_array($value, $stored_permissions)) {
+                    PermissionRole::create(['permission_id' => $value, 'role_id' => $request->id]);
+                }
+            }
+        }
+
+        return redirect(URL::route('admin.role.list'))->with('success', 'Данные обновлены');
+
     }
 
     /**
@@ -137,11 +142,7 @@ class RoleController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id = $request->id;
-
-        if (!is_numeric($id)) abort(500);
-
-        Role::where(['id' => $id])->delete();
-        PermissionRole::where(['role_id' => $id])->delete();
+        Role::find($request->id)->delete();
+        PermissionRole::where('role_id', $request->id)->delete();
     }
 }

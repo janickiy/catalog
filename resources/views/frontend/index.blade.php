@@ -48,6 +48,20 @@
 
     <div class="row">
 
+        <div class="col-sm-12">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- top2 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2243538192217050"
+             data-ad-slot="8369734756"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        </div>
+
         <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8   bg-white rounded box-shadow">
 
             <div id="logo" >
@@ -76,7 +90,7 @@
                         <td style="padding-bottom:25px;">
                             <div class="border-bottom border-gray">
                                 <address ><a href="http://{{ $link->url }}" target="_blank">
-                                    {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $links->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
+							        {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $link->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
                                 </a>
                                 {{ $link->description }}
                                     <br>
@@ -101,13 +115,44 @@
 
         </div>
 
-        <div style="margin:10px" class="col-sm-12 col-md-4 col-lg-2 bg-white rounded box-shadow">
-            hjkljj fffffffffffffffffffffffffffffffffffffffffffffff
+        <div style="margin:10px" class="col-sm-12 col-md-3 col-lg-3">
+
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- 180x150, создано 13.01.09 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-2243538192217050"
+                 data-ad-slot="0787053397"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- 180x150, создано 13.01.09 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-2243538192217050"
+                 data-ad-slot="0787053397"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- 180x150, создано 13.01.09 -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:200px;height:200px"
+                 data-ad-client="ca-pub-2243538192217050"
+                 data-ad-slot="0787053397"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
         </div>
 
         <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8">
 
             {!! isset($id) && $id ? $links->links() : '' !!}
+
         </div>
 
     </div>

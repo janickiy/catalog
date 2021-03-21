@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Mail;
-use Auth;
+
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Start\Helpers;
+use App\Http\Controllers\Controller;
 use Session;
 use Validator;
-use App\Http\Controllers\Controller;
+use Mail;
+use Auth;
+use URL;
 
 class AdminLoginController extends Controller
 {
@@ -21,6 +21,7 @@ class AdminLoginController extends Controller
     public function login()
     {
         $data = [];
+
         return view('admin.login', $data);
     }
 
@@ -31,28 +32,24 @@ class AdminLoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-
         if ($validator->fails()) {
             return redirect('admin/dashboard')
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                // Authentication passed...
-                return redirect()->intended('dashboard');
-            } else {
-                Session::flash('error', 'You are not authenticated user !');
-                return redirect("admin/dashboard");
-            }
         }
 
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Authentication passed...
+            return redirect()->intended('dashboard');
+        } else {
+            Session::flash('error', 'You are not authenticated user !');
+            return redirect(URL::route('admin.dashboard'));
+        }
     }
 
     /**
@@ -65,7 +62,7 @@ class AdminLoginController extends Controller
         Auth::logout();
         \Session::flush();
 
-        return redirect('admin/dashboard');
+        return redirect(URL::route('admin.dashboard'));
     }
 
     /**
@@ -86,11 +83,8 @@ class AdminLoginController extends Controller
      */
     public function sendResetLinkEmail(Request $request)
     {
-        //setDbConnect($request->company);
-
         $this->validate($request, [
             'email' => 'required|email|exists:users',
-            //'company' => 'required',
         ]);
 
         $data['email'] = $request->email;
@@ -100,16 +94,13 @@ class AdminLoginController extends Controller
         \DB::table('password_resets')->insert($data);
 
         Mail::send('auth.emails.password', ['data' => $data], function ($message) use ($data) {
-
             $message->from('us@example.com', 'Stock Manager');
-
             $message->to($data['email'])->subject('Reset Password!');
-
         });
 
         \Session::flash('status', 'Password reset link sent to your email address');
+
         return back()->withInput();
 
     }
-
 }

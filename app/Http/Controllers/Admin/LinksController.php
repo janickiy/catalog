@@ -2,37 +2,34 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Models\{Catalog, Links};
-use App\Http\Start\Helpers;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use Validator;
+use App\Models\{Links};
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\LinksImport;
-
 use App\Imports\LinksImportFromCsv;
+use Validator;
+use URL;
 
 class LinksController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function list()
     {
         $status_list = [];
 
-        foreach(['new' => 0,'publish' => 1,'hide' => 2,'block' => 3] as $key => $value) {
+        foreach (['new' => 0, 'publish' => 1, 'hide' => 2, 'block' => 3] as $key => $value) {
             $status_list[$value] = linkStatus($key);
         }
 
         return view('admin.links.list', compact('status_list'))->with('title', 'Ссылки');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         $options = [];
@@ -67,12 +64,12 @@ class LinksController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        } else {
-
-            Links::create(array_merge($request->all(), ['token' => md5($request->url . time()), 'status' => 1]));
-
-            return redirect('admin/links/list')->with('success', 'Информация успешно добавлена');
         }
+
+        Links::create(array_merge($request->all(), ['token' => md5($request->url . time()), 'status' => 1]));
+
+        return redirect(URL::route('admin.links.list'))->with('success', 'Информация успешно добавлена');
+
     }
 
     /**
@@ -81,18 +78,14 @@ class LinksController extends Controller
      */
     public function edit($id)
     {
-        if (!is_numeric($id)) abort(500);
+        $link = Links::find($id);
 
-        $link = Links::where('id', $id)->first();
+        if (!$link) abort(404);
 
-        if ($link) {
-            $options = [];
-            $options = ShowTree($options, 0);
+        $options = [];
+        $options = ShowTree($options, 0);
 
-            return view('admin.links.create_edit', compact('link', 'options'));
-        }
-
-        abort(404);
+        return view('admin.links.create_edit', compact('link', 'options'));
     }
 
     /**
@@ -121,23 +114,26 @@ class LinksController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        } else {
-
-            $data['name'] = $request->name;
-            $data['url'] = $request->url;
-            $data['email'] = $request->email;
-            $data['reciprocal_link'] = $request->reciprocal_link;
-            $data['description'] = $request->description;
-            $data['keywords'] = $request->keywords;
-            $data['full_description'] = $request->full_description;
-            $data['htmlcode_banner'] = $request->htmlcode_banner;
-            $data['catalog_id'] = $request->catalog_id;
-            $data['check_link'] = $request->check_link ? 1 : 0;
-
-            Links::where('id', $request->id)->update($data);
-
-            return redirect('admin/links/list')->with('success', 'Данные обновлены');
         }
+
+        $links = Links::find($request->id);
+
+        if (!$links) abort(404);
+
+        $links->name = $request->input('name');;
+        $links->url = $request->input('url');
+        $links->email = $request->input('email');
+        $links->reciprocal_link = $request->input('reciprocal_link');
+        $links->description = $request->input('description');
+        $links->keywords = $request->input('keywords');
+        $links->full_description = $request->input('full_descriptin');
+        $links->htmlcode_banner = $request->input('htmlcode_banne');
+        $links->catalog_id = $request->input('catalog_id');
+        $links->check_link = $request->check_link ? 1 : 0;
+        $links->save();
+
+        return redirect(URL::route('admin.links.list'))->with('success', 'Данные обновлены');
+
     }
 
     /**
@@ -145,13 +141,12 @@ class LinksController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id = $request->id;
-
-        if (!is_numeric($id)) abort(500);
-
-        Links::where(['id' => $id])->delete();
+        Links::find($request->id)->delete();
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function importForm()
     {
         return view('admin.links.import');
@@ -178,23 +173,25 @@ class LinksController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        } else {
-           //
-            $extension = strtolower($request->file('file')->getClientOriginalExtension());
-
-            if ($extension == 'csv' or $extension == 'txt') {
-                $path = $request->file('file')->getRealPath();
-
-                $n = LinksImportFromCsv::import($path);
-
-            } else {
-                $n =  Excel::import(new LinksImport, $request->file('file'));
-            }
-
-            return redirect('admin/links/import')->with('success', 'Импорт заврешен. Импортировано ' . $n.' ссылок');
         }
+
+        $extension = strtolower($request->file('file')->getClientOriginalExtension());
+
+        if ($extension == 'csv' or $extension == 'txt') {
+            $path = $request->file('file')->getRealPath();
+
+            $n = LinksImportFromCsv::import($path);
+
+        } else {
+            $n = Excel::import(new LinksImport, $request->file('file'));
+        }
+
+        return redirect(URL::route('admin.links.import'))->with('success', 'Импорт заврешен. Импортировано ' . $n . ' ссылок');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function export()
     {
         return view('admin.links.export');
@@ -219,7 +216,7 @@ class LinksController extends Controller
 
                 Links::whereIN('id', $temp)->update(['status' => $request->action]);
 
-                return redirect('admin/links/list')->with('success', 'Данные обновлены');
+                return redirect(URL::route('admin.links.list'))->with('success', 'Данные обновлены');
             }
         }
 

@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use App\User;
+use App\Models\{Role, RoleUser};
+use App\Http\Controllers\Controller;
+use URL;
 use Validator;
 use Image;
 use Auth;
 use Hash;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Start\Helpers;
-use App\User;
-use App\Models\{Role, RoleUser};
-use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('admin.user.list')->with('title', 'Пользователи');
@@ -33,7 +30,6 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-
         $role_options = [];
 
         foreach ($roles as $role) {
@@ -46,7 +42,7 @@ class UserController extends Controller
     /**
      * Store a newly created User in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return User List page view
      */
     public function store(Request $request)
@@ -63,30 +59,28 @@ class UserController extends Controller
             return redirect('admin/user/create')
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-
-            $pic = $request->file('avatar');
-
-            if (isset($pic)) {
-                $destinationPath = public_path('/uploads/users/');
-                $filename = time() . '.' . $pic->getClientOriginalExtension();
-
-                $img = Image::make($request->file('avatar')->getRealPath());
-
-                $img->resize(150, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath . '/' . $filename);
-            }
-
-            $result = User::create(array_merge($request->all(), ['password' => Hash::make($request->password), 'avatar' => isset($filename) ? $filename : null]));
-
-            if ($result) {
-                RoleUser::create(['user_id' => $result->id, 'role_id' => $request->role_id]);
-
-                return redirect("admin/user/list")->with('success', 'Пользователь добавлен');
-            } else
-                abort(500);
         }
+
+        $pic = $request->file('avatar');
+
+        if (isset($pic)) {
+            $destinationPath = public_path('/uploads/users/');
+            $filename = time() . '.' . $pic->getClientOriginalExtension();
+
+            $img = Image::make($request->file('avatar')->getRealPath());
+
+            $img->resize(150, 150, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath . '/' . $filename);
+        }
+
+        $result = User::create(array_merge($request->all(), ['password' => Hash::make($request->password), 'avatar' => isset($filename) ? $filename : null]));
+
+        if (!$result) abort(500);
+        RoleUser::create(['user_id' => $result->id, 'role_id' => $request->role_id]);
+
+        return redirect(URL::route("admin.user.list"))->with('success', 'Пользователь добавлен');
+
     }
 
     /**
@@ -95,10 +89,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        if (!is_numeric($id)) abort($id);
-
         $roles = Role::get();
-        $userData = User::where('id', '=', $id)->first();
+        $userData = User::find($id);
 
         $role_options = [];
 
@@ -117,9 +109,6 @@ class UserController extends Controller
     {
         $id = $request->id;
 
-        if (!is_numeric($id)) abort(500);
-
-        // dd($id);exit;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
             'role_id' => 'required',
@@ -131,59 +120,69 @@ class UserController extends Controller
             return redirect('admin/user/edit/' . $id)
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-
-            $data['name'] = $request->name;
-            $data['role_id'] = $request->role_id;
-
-            if (!empty($request->password) && !empty($request->confirm_password)) {
-                $data['password'] = Hash::make($request->password);
-            }
-
-            $pic = $request->file('avatar');
-
-            if (isset($pic)) {
-
-                $upload = 'public/uploads/users';
-                $pic1 = $request->pic;
-
-                if ($pic1 != NULL) {
-                    $dir = public_path("uploads/users/$pic1");
-                    if (file_exists($dir)) {
-                        unlink($dir);
-                    }
-                }
-
-                $destinationPath = public_path('/uploads/users/');
-                $filename = time() . '.' . $pic->getClientOriginalExtension();
-
-                $img = Image::make($request->file('avatar')->getRealPath());
-
-                $img->resize(150, 150, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath . '/' . $filename);
-
-                $data['avatar'] = $filename;
-            }
-
-            User::where('id', $id)->update($data);
-            RoleUser::where('user_id', $id)->update(['role_id' => $request->role_id]);
-
-            return redirect("admin/user/list")->with('success', 'Данные пользователя обнавлены');
         }
+
+        $user = User::find($id);
+
+        if (!$user) abort(404);
+
+        $user->name = $request->input('name');
+        $user->role_id = $request->input('role_id');
+
+        if (!empty($request->password) && !empty($request->confirm_password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $pic = $request->file('avatar');
+
+        if (isset($pic)) {
+
+            $pic1 = $request->pic;
+
+            if ($pic1 != NULL) {
+                $dir = public_path("uploads/users/$pic1");
+                if (file_exists($dir)) {
+                    unlink($dir);
+                }
+            }
+
+            $destinationPath = public_path('/uploads/users/');
+            $filename = time() . '.' . $pic->getClientOriginalExtension();
+
+            $img = Image::make($request->file('avatar')->getRealPath());
+
+            $img->resize(150, 150, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath . '/' . $filename);
+
+            $user->avatar = $filename;
+        }
+
+        $user->save();
+
+        RoleUser::where('user_id', $id)->update(['role_id' => $request->role_id]);
+
+        return redirect(URL::route("admin.user.list"))->with('success', 'Данные пользователя обнавлены');
+
     }
 
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function currentUser()
     {
         $id = Auth::user()->id;
         $data['menu'] = 'people';
         $data['sub_menu'] = 'user';
         $data['header'] = 'user';
-        $data['userData'] = DB::table('users')->where('id', '=', $id)->first();
+        $data['userData'] = User::find($id);
+
         return view('admin.user.edit_current_user', $data);
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function updateProfile()
     {
         $id = Auth::user()->id;
@@ -191,59 +190,57 @@ class UserController extends Controller
             'name' => 'required|min:3'
         ]);
 
-
         if ($validator->fails()) {
             return redirect('/edit/current-user')
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-
-            $data['name'] = $this->request->name;
-            $data['updated_at'] = date('Y-m-d H:i:s');
-
-            if (!empty($this->request->password) && !empty($this->request->confirm_password)) {
-                $data['password'] = Hash::make($this->request->password);
-                if ($this->request->password != $this->request->confirm_password) {
-                    return back()->withInput()->withErrors(['confirm_password' => "Password not matching !"]);
-                }
-            }
-
-            $pic = $this->request->file('picture');
-
-            if (isset($pic)) {
-                $upload = 'public/uploads/userPic';
-
-                $pic1 = $this->request->pic;
-                if ($pic1 != NULL) {
-                    $dir = public_path("uploads/userPic/$pic1");
-                    if (file_exists($dir)) {
-                        unlink($dir);
-                    }
-                }
-
-                $filename = $pic->getClientOriginalName();
-                $pic = $pic->move($upload, $filename);
-                $data['picture'] = $filename;
-            }
-
-            DB::table('users')->where('id', $id)->update($data);
-
-            Session::flash('message', 'Profile updated successfully !');
-            return redirect()->intended("/edit/current-user");
         }
+
+        $user = User::find($id);
+
+        $user->name = $this->request->name;
+
+        if (!empty($this->request->password) && !empty($this->request->confirm_password)) {
+            $user->password = Hash::make($this->request->password);
+            if ($this->request->password != $this->request->confirm_password) {
+                return back()->withInput()->withErrors(['confirm_password' => "Password not matching !"]);
+            }
+        }
+
+        $pic = $this->request->file('picture');
+
+        if (isset($pic)) {
+            $upload = 'public/uploads/userPic';
+
+            $pic1 = $this->request->pic;
+            if ($pic1 != NULL) {
+                $dir = public_path("uploads/userPic/$pic1");
+                if (file_exists($dir)) {
+                    unlink($dir);
+                }
+            }
+
+            $filename = $pic->getClientOriginalName();
+            $pic = $pic->move($upload, $filename);
+            $user->picture = $filename;
+        }
+
+        $user->save();
+
+        Session::flash('message', 'Profile updated successfully !');
+
+        return redirect()->intended("/edit/current-user");
+
     }
 
     /**
      * Remove the specified User from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return User List page view
      */
-
     public function destroy(Request $request)
     {
-        $id = $request->id;
-        User::where('id', '=', $id)->delete();
+        User::find($request->id)->delete();
     }
-
 }

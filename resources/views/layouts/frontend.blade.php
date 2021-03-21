@@ -111,6 +111,29 @@
 
     </style>
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-2243538192217050",
+            enable_page_level_ads: true
+        });
+    </script>
+	
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript" >
+	(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(65306959, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+	</script>
+	<noscript><div><img src="https://mc.yandex.ru/watch/65306959" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<!-- /Yandex.Metrika counter -->
+
 </head>
 
 <body>
@@ -141,7 +164,6 @@
         <p>© Copyright {{ date("Y") }}, Белый каталог сайтов</p>
 
     </div>
-
 
 
 </div>

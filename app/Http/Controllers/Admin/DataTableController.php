@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use DataTables;
 use App\Http\Requests;
 use App\User;
@@ -13,11 +12,9 @@ use App\Http\Controllers\Controller;
 
 class DataTableController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @return mixed
+     */
     public function getUsers()
     {
         $users = User::all();
@@ -42,6 +39,9 @@ class DataTableController extends Controller
             ->rawColumns(['actions'])->make(true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getRole()
     {
         $role = Role::all();
@@ -58,6 +58,9 @@ class DataTableController extends Controller
             ->rawColumns(['actions'])->make(true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getSettings()
     {
         $settings = Settings::all();
@@ -74,6 +77,9 @@ class DataTableController extends Controller
             ->rawColumns(['actions'])->make(true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getLinks()
     {
         $links = Links::select('*');
@@ -106,14 +112,15 @@ class DataTableController extends Controller
             ->rawColumns(['actions','checkbox'])->make(true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getMessages()
     {
         $messages = Feedback::select('*');
 
         return Datatables::of($messages)
 
-
            ->make(true);
     }
-
 }

@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use DB;
-use Session;
-use Auth;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class DashboardController extends Controller
 {
+    /**
+     * DashboardController constructor.
+     * @param Auth $auth
+     */
     public function __construct(Auth $auth){
         $this->auth = $auth;
     }
-    
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('admin.dashboard');
